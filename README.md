@@ -32,6 +32,6 @@ Why did I do this?
 
 
 The original Laser Imaging System Head/Computer I'm emulating looks like this:
-![Laser Imaging System 1](https://github.com/tpfaff100/AnalogLaserImagingSynth01.jpg?raw=true)
-![Laser Imaging System 2](https://github.com/tpfaff100/AnalogLaserImagingSynth02.jpg?raw=true)
-![Laser Imaging System 3](https://github.com/tpfaff100/AnalogLaserImagingSynth03.jpg?raw=true)
+
+![Laser Imaging System 1](https://github.com/tpfaff100/Oscillo/AnalogLaserImagingSynth01.jpg?raw=true)
+![Laser Imaging System 2](https://github.com/tpfaff100/Oscillo/AnalogLaserImagingSynth02.jpg?raw=true)

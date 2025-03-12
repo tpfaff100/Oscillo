@@ -30,10 +30,9 @@ Why did I do this?
       I want a custom character depths!  Works pretty well...
 3.  And it should run everywhere.  Even under Termux (similar to Ubuntu) on my Android!
 
-You'll see a phase-shifted animation when you run the code.  A momentary snapshot might look like this:
+Sample build+output when run:
+(two quadrature oscillators added together, slightly out of phase with each other)
 ![Oscillo screen shot](https://github.com/tpfaff100/Oscillo/blob/main/triganime.gif?raw=true)
-
-![Oscillo screen shot](https://github.com/tpfaff100/Oscillo/blob/main/quadrature.jpg?raw=true)
 
 The original Laser Imaging System Head/Computer I'm emulating looks like this:
 

@@ -19,7 +19,6 @@
 #include "Oscill.h"		/* Oscillator containing waveform type an her attributes */
 #include "Bank.h"		/* Bank of oscillators we can select and iterate through */
 
-#define SCALE		80
 #define ASPECT_X	4
 #define ASPECT_Y	3	
 #define DELAY		50000
@@ -29,13 +28,13 @@ typedef unsigned char u1;
 void Test_Oscillators() {
         int x,y;
         u1 surface[SCALE][SCALE];
-        Oscill *o1 = new Oscill(0.101f); /* create a quadrature  oscillator */
-        Oscill *o2 = new Oscill(0.1f);
+        Oscill *o1 = new Oscill(0.00101f); /* create a quadrature  oscillator */
+        Oscill *o2 = new Oscill(0.001f);
 
         std::system("clear");
 
         // ps = sin waveform phase shift.
-        for (float ps = 0; ps <= PI*2; ps+= .01) {
+        for (float ps = 0; ps <= PI*16; ps+= .01) {
                 memset(surface, ' ', SCALE*SCALE);// clear the drawing surface
                 usleep(DELAY);
                 std::system("clear");
@@ -49,6 +48,7 @@ void Test_Oscillators() {
                         int y = int(o1->chan2 + o2->chan2) / 2;
                         surface[x][y] = '*';    // plot the circle
                 };
+
                 // draw the oscillator cycle data.
                 for (int y = 0; y < SCALE; y++) {
                         for (int x=0; x < SCALE; x++) {

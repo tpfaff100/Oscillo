@@ -1,7 +1,7 @@
 #ifndef OSCILL_H
 #define OSCILL_H
 
-#define SCALE           80
+#define SCALE           60 
 
 #include "Sin.h"
 #include "Cos.h"

@@ -31,3 +31,7 @@ Why did I do this?
 3.  And it should run everywhere.  Even under Termux (similar to Ubuntu) on my Android!
 
 
+The original Laser Imaging System Head/Computer I'm emulating looks like this:
+![Laser Imaging System 1](https://github.com/tpfaff100/AnalogLaserImagingSynth01.jpg?raw=true)
+![Laser Imaging System 2](https://github.com/tpfaff100/AnalogLaserImagingSynth02.jpg?raw=true)
+![Laser Imaging System 3](https://github.com/tpfaff100/AnalogLaserImagingSynth03.jpg?raw=true)

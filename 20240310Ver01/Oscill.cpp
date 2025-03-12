@@ -5,7 +5,6 @@
 #include "Sin.h"
 #include "Cos.h"
 
-#define SCALE           80
 
 using namespace std;
 

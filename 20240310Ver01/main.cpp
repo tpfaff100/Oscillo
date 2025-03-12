@@ -29,9 +29,8 @@ typedef unsigned char u1;
 void Test_Oscillators() {
         int x,y;
         u1 surface[SCALE][SCALE];
-        Oscill *o1 = new Oscill(0.01f); /* create a quadrature  oscillator */
+        Oscill *o1 = new Oscill(0.11f); /* create a quadrature  oscillator */
         Oscill *o2 = new Oscill(0.1f);
-
 
         std::system("clear");
 
@@ -46,7 +45,7 @@ void Test_Oscillators() {
                 while (o1->range() ) {
                         o2->range();
 
-                        int x = int(o1->chan1 + o2->chan2) / 2;
+                        int x = int(o1->chan1 + o2->chan1) / 2;
                         int y = int(o1->chan2 + o2->chan2) / 2;
                         surface[x][y] = '*';    // plot the circle
                 };

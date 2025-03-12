@@ -29,7 +29,7 @@ typedef unsigned char u1;
 void Test_Oscillators() {
         int x,y;
         u1 surface[SCALE][SCALE];
-        Oscill *o1 = new Oscill(0.11f); /* create a quadrature  oscillator */
+        Oscill *o1 = new Oscill(0.101f); /* create a quadrature  oscillator */
         Oscill *o2 = new Oscill(0.1f);
 
         std::system("clear");

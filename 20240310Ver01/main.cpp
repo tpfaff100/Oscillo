@@ -25,6 +25,46 @@
 
 typedef unsigned char u1;
 
+void Test_Oscillators() {
+        int x,y;
+        u1 surface[SCALE][SCALE];
+        Oscill *o1 = new Oscill(0.01f); /* create a quadrature  oscillator */
+        Oscill *o2 = new Oscill(0.1f);
+
+
+        std::system("clear");
+
+        // ps = sin waveform phase shift.
+        for (float ps = 0; ps <= PI*2; ps+= .01) {
+                memset(surface, ' ', SCALE*SCALE);// clear the drawing surface
+                usleep(DELAY);
+                std::system("clear");
+
+
+                // run one oscillator cycle, storying values in the (x,y) surface array.
+                while (o1->range() ) {
+                        o2->range();
+
+                        int x = int(o1->chan1 + o2->chan2) / 2;
+                        int y = int(o1->chan2 + o2->chan2) / 2;
+                        surface[x][y] = '*';    // plot the circle
+                };
+                // draw the oscillator cycle data.
+                for (int y = 0; y < SCALE; y++) {
+                        for (int x=0; x < SCALE; x++) {
+                                printf("%c", surface[x][y]);
+                                printf("%c", surface[x][y]);
+                        }
+                        printf("\n");
+                }
+
+                o1->reset();
+                o1->setPhaseO1(ps);
+        }
+
+        delete o2;
+        delete o1;
+}
 
 
 
@@ -143,6 +183,7 @@ void Test_Waveform_Anim() {
 
 int main(void) {
 //	Test_Waveform_Anim();
-	Test_Oscillator();
+//      Test_Oscillator();
+        Test_Oscillators();
 	
 }

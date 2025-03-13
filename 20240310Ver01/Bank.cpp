@@ -30,12 +30,17 @@ Bank::~Bank() {
  */
 bool Bank::range(void) {
 	bool inrange = false;
+	int x = 0, y = 0;
+
 	for (int count = osc_count-1; count >= 0; count--) {
 		inrange = osc_ary[count].range();
-		int x = int(osc_ary[count].chan1 + osc_ary[count].chan1) / 2;
-		int y = int(osc_ary[count].chan2 + osc_ary[count].chan2) / 2;
-		surface->bmap[x][y] = '*';    // write a 'pixel' to the offscreen bitmap.
+		x += int(osc_ary[count].chan1);
+		y += int(osc_ary[count].chan2);
 	}
+	x = x / osc_count;
+	y = y / osc_count;
+	surface->bmap[x][y] = '*';    // write a 'pixel' to the offscreen bitmap.
+
         return inrange;		// use the 0th oscillator's range to determine completion.
 }
 

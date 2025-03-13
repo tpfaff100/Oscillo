@@ -28,11 +28,12 @@
 
 void Test_Banks() {
 	
-        Oscill osc_ary[] = { Oscill(0.00101f), Oscill(0.001f) };
-        int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
+//	Oscill osc_ary[] = { Oscill(0.00101f), Oscill(0.001f) };
+	Oscill osc_ary[] = { Oscill(0.00101f), Oscill(0.001f), Oscill(0.00401f) };
+	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
 
-        for (float ps = 0; ps <= PI*16; ps+= .1) {
+        for (float ps = 0; ps <= PI*32; ps+= .1) {
 		usleep(DELAY);
 		std::system("clear");
 		bank1->clear();
@@ -43,6 +44,7 @@ void Test_Banks() {
 		osc_ary[0].reset();
 		osc_ary[0].setPhaseO1(ps);
 		osc_ary[1].setPhaseO1(ps/2);
+		osc_ary[2].setPhaseO1(ps/8);
 	}
 
 	delete bank1;
@@ -208,7 +210,7 @@ void Test_Waveform_Anim() {
 int main(void) {
 //	Test_Waveform_Anim();
 //      Test_Oscillator();
-        Test_Oscillators();
-//	Test_Banks();
+//        Test_Oscillators();
+	Test_Banks();
 	
 }

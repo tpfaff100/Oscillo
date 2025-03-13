@@ -12,18 +12,42 @@
 
 
 #include <iostream>
+
 #include <unistd.h>
 #include "Trig.h"
 #include "Sin.h"
 #include "Cos.h"
 #include "Oscill.h"		/* Oscillator containing waveform type an her attributes */
 #include "Bank.h"		/* Bank of oscillators we can select and iterate through */
+#include "Types.h"
 
 #define ASPECT_X	4
 #define ASPECT_Y	3	
 #define DELAY		50000
 
-typedef unsigned char u1;
+
+void Test_Banks() {
+	
+        Oscill osc_ary[] = { Oscill(0.00101f), Oscill(0.001f) };
+        int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
+	Bank *bank1 = new Bank(osc_ary, osc_count);
+
+        for (float ps = 0; ps <= PI*16; ps+= .1) {
+		usleep(DELAY);
+		std::system("clear");
+		bank1->clear();
+
+		while(bank1->range());		// do until specified range is exceeded in osc 0.
+		bank1->dump();
+
+		osc_ary[0].reset();
+		osc_ary[0].setPhaseO1(ps);
+		osc_ary[1].setPhaseO1(ps/2);
+	}
+
+	delete bank1;
+
+}
 
 void Test_Oscillators() {
         int x,y;
@@ -185,5 +209,6 @@ int main(void) {
 //	Test_Waveform_Anim();
 //      Test_Oscillator();
         Test_Oscillators();
+//	Test_Banks();
 	
 }

@@ -33,22 +33,25 @@ void Test_Banks() {
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
 
-        for (float ps = 0; ps <= PI*32; ps+= .1) {
-		usleep(DELAY);
-		std::system("clear");
-		bank1->clear();
+	for (int count = 0; count < 2; count++) {
+		for (float ps = 0; ps <= PI*32; ps+= .1) {
+			usleep(DELAY);
+			std::system("clear");
+			bank1->clear();
 
-		while(bank1->range());		// do until specified range is exceeded in osc 0.
-		bank1->dump();
+			while(bank1->range());		// do until specified range is exceeded in osc 0.
+			bank1->dump();
 
-		osc_ary[0].reset();
-		osc_ary[0].setPhaseO1(ps);
-		osc_ary[1].setPhaseO1(ps/2);
-		osc_ary[2].setPhaseO1(ps/8);
+			osc_ary[0].reset();
+			osc_ary[0].setPhaseO1(ps);
+			osc_ary[1].setPhaseO1(ps/2);
+			osc_ary[2].setPhaseO1(ps/8);
+		}
+		osc_ary[0].swap();	// flip one of the oscillator's axes (i.e. sin becomes cos, cos becomes sin).
+sleep(2);
 	}
 
 	delete bank1;
-
 }
 
 void Test_Oscillators() {

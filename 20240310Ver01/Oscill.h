@@ -33,6 +33,7 @@ class Oscill
 {
 private:
 	_osc_unit *o;
+	bool axis_swap;		// normally, sin is plotted on the x axis w/ cos on the y axis.  if true, the axes are inverted.
 public:
 	float chan1, chan2;
 
@@ -45,6 +46,9 @@ public:
 
 	/** reset the range used to evaluate the oscillator */
 	virtual void reset(void);
+	
+	/** swap sin/cos on the x,y axis, respectively */
+	virtual bool swap();
 
 	virtual bool range(void);
 

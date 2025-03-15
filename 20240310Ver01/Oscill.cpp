@@ -26,6 +26,7 @@ Oscill::Oscill() {
 	o->range.low = 0.0;
 	o->range.high = PI*2;		/* should let us draw one circle */
 
+	axis_swap = false;
 	chan1 = 0.0f;		/* these work out to integers and could be reconfigured as INT - optional compile time option maybe? */
 	chan2 = 0.0f;
 }
@@ -43,6 +44,7 @@ Oscill::Oscill(float rate) {
         o->range.low = 0.0;
         o->range.high = PI*2;           /* should let us draw one circle */
 
+	axis_swap = false;
 	chan1 = 0.0f;
 	chan2 = 0.0f;
 }
@@ -99,10 +101,24 @@ void Oscill::setScale(int scale) {
 	o->scale = scale;
 }
 
-void Oscill::next(void) {
-	chan1 = o->sin->next() * float(o->scale);
-	chan2 = o->cos->next() * float(o->scale);
+bool Oscill::swap() {
+	if (axis_swap == false)
+		axis_swap = true;
+	else 
+		axis_swap = false;
+	return axis_swap;
+}
 
+void Oscill::next(void) {
+	if (axis_swap == false) {
+		chan1 = o->sin->next() * float(o->scale);
+		chan2 = o->cos->next() * float(o->scale);
+	}
+	else {
+		chan1 = o->cos->next() * float(o->scale);
+		chan2 = o->sin->next() * float(o->scale);
+	}
+	
 	chan1 = SCALE/2 + chan1 / 2;
 	chan2 = SCALE/2 + chan2 / 2;
 }

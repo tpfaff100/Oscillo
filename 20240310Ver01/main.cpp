@@ -44,18 +44,18 @@
 
 void Test_Invert_Axes() {
 //	Oscill osc_ary[] = { Oscill(0.01f), Oscill(0.04f) };
-	Oscill osc_ary[] = { Oscill(0.00101f), Oscill(0.001f), Oscill(0.00401f) };
+	Oscill osc_ary[] = { Oscill(0.00101f), Oscill(0.001f), Oscill(0.00102f) };
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
 
 	osc_ary[0].setRange(0.0f, PI*2);
 	osc_ary[0].swap();
 	osc_ary[1].setRange(0.0f, PI*4);
-	osc_ary[0].swap();
+	osc_ary[1].swap();
 	osc_ary[1].setRange(0.0f, PI*8);
 
 	for (int count = 0; count < 2; count++) {
-		for (float ps = 0; ps <= PI*8; ps+= .01) {
+		for (float ps = 0; ps <= PI*8; ps+= .001) {
 			usleep(DELAY);
 			std::system("clear");
 //			std::cout << "\l";
@@ -64,9 +64,9 @@ void Test_Invert_Axes() {
 			while(bank1->range());		// do until specified range is exceeded in osc 0.
 			bank1->dump();
 
-//			osc_ary[0].reset();
+			osc_ary[0].reset();
 //			osc_ary[0].setPhaseO1(ps);
-			osc_ary[1].setPhaseO1(0.2f);
+//			osc_ary[1].setPhaseO1(0.2f);
 //			osc_ary[2].setPhaseO1(0.0f);
 		}
 		osc_ary[0].swap();	// flip one of the oscillator's axes (i.e. sin becomes cos, cos becomes sin).
@@ -266,8 +266,7 @@ void Test_Waveform_Anim() {
 int main(void) {
 //	Test_Waveform_Anim();
 //      Test_Oscillator();
-//        Test_Oscillators();
+//      Test_Oscillators();
 //	Test_Bank();
-Test_Invert_Axes();
-	
+	Test_Invert_Axes();
 }

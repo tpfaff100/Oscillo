@@ -26,7 +26,8 @@ Oscill::Oscill() {
 	o->range.low = 0.0;
 	o->range.high = PI*2;		/* should let us draw one circle */
 
-	axis_swap = false;
+	axis_swap = false;		/* do not swap sin/cos across x/y axis by default */
+	continuous = CONTINUOUS;	/* prep for CONTINUOUS waveform generation, not a ONESHOT cycle */
 	chan1 = 0.0f;		/* these work out to integers and could be reconfigured as INT - optional compile time option maybe? */
 	chan2 = 0.0f;
 }
@@ -45,6 +46,7 @@ Oscill::Oscill(float rate) {
         o->range.high = PI*2;           /* should let us draw one circle */
 
 	axis_swap = false;
+	continuous = CONTINUOUS;
 	chan1 = 0.0f;
 	chan2 = 0.0f;
 }
@@ -72,15 +74,13 @@ bool Oscill::range(void) {
 	return true;
 }
 
+
+
 void Oscill::setRate(float rate) {
 	o->sin->setIncRate(rate);
 	o->cos->setIncRate(rate);
 }
 
-void Oscill::setPhase(float phase) {
-	o->sin->setPhase(phase);
-	o->cos->setPhase(phase);
-}
 
 void Oscill::setPhaseO1(float phase) {
 	o->sin->setPhase(phase);
@@ -96,6 +96,9 @@ void Oscill::setRange(float low, float high) {
 	o->range.high = high;
 }
 
+void Oscill::setContinous(OSCILL_PERSIST persist) {
+	continuous = persist; 
+}
 
 void Oscill::setScale(int scale) {
 	o->scale = scale;

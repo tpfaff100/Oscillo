@@ -10,6 +10,22 @@
  ** Requirements:  gcc, g++, make utility.  This module is mostly C code the rest is C++
  */
 
+/** Legend:
+ **  A "Trig" object defines a sin or cos.  Not entirely efficient these could be done with integer-based lookup tables but currently are floating point 
+ **  An "Oscill"ator object defines a quadrature oscillator.  It can generate a sin and cos waveform.
+ **  A  "Bank" defines a collection of oscillators.  These can be plotted on top of each other or can be merged (added) together
+ **
+ **  Typically you want to create a bank of oscillators.  The oscillators are defined in a simple array.
+ **  You need to clear the screen after each successive image is drawn.  After clearing screen...
+ **  Then call the -->range() method repeatedly on the bank.  This will cycle through all of the oscillators and add them together
+ **  Continue until the range exits.  You can also specify new range values 
+ **  The bank also creates a "bitmap" which is drawn into and then displayed on the screen.
+ **  
+ **  pseudocode:  new Bank(oscillators); create phase shift from zero to PI*n.  Clear the bank and call  while(range()) until exit.
+ **               Then call dump() to write the created bitmap (with the trig data) on the screen.
+ **               adjust phase shift on any oscillators you like and start over (not reallocating anything of course).
+ **		  See Test_Bank() for the C code that does all this.
+ */
 
 #include <iostream>
 
@@ -19,19 +35,56 @@
 #include "Cos.h"
 #include "Oscill.h"		/* Oscillator containing waveform type an her attributes */
 #include "Bank.h"		/* Bank of oscillators we can select and iterate through */
+#include "TextBitmap.h"		/* Get the list of colors we can use for drawing */
 #include "Types.h"
 
 #define ASPECT_X	4
 #define ASPECT_Y	3	
 #define DELAY		50000
 
+void Test_Invert_Axes() {
+//	Oscill osc_ary[] = { Oscill(0.01f), Oscill(0.04f) };
+	Oscill osc_ary[] = { Oscill(0.00101f), Oscill(0.001f), Oscill(0.00401f) };
+	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
+	Bank *bank1 = new Bank(osc_ary, osc_count);
 
-void Test_Banks() {
-	
+	osc_ary[0].setRange(0.0f, PI*2);
+	osc_ary[0].swap();
+	osc_ary[1].setRange(0.0f, PI*4);
+	osc_ary[0].swap();
+	osc_ary[1].setRange(0.0f, PI*8);
+
+	for (int count = 0; count < 2; count++) {
+		for (float ps = 0; ps <= PI*8; ps+= .01) {
+			usleep(DELAY);
+			std::system("clear");
+//			std::cout << "\l";
+			bank1->clear();
+
+			while(bank1->range());		// do until specified range is exceeded in osc 0.
+			bank1->dump();
+
+//			osc_ary[0].reset();
+//			osc_ary[0].setPhaseO1(ps);
+			osc_ary[1].setPhaseO1(0.2f);
+//			osc_ary[2].setPhaseO1(0.0f);
+		}
+		osc_ary[0].swap();	// flip one of the oscillator's axes (i.e. sin becomes cos, cos becomes sin).
+	}
+
+	delete bank1;
+}
+
+void Test_Bank() {
 //	Oscill osc_ary[] = { Oscill(0.00101f), Oscill(0.001f) };
 	Oscill osc_ary[] = { Oscill(0.00101f), Oscill(0.001f), Oscill(0.00401f) };
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
+
+	/* use one-shot oscillators (they stop after one cycle) */
+	osc_ary[0].setContinous(ONESHOT);
+	osc_ary[1].setContinous(ONESHOT);
+	osc_ary[2].setContinous(ONESHOT);
 
 	for (int count = 0; count < 2; count++) {
 		for (float ps = 0; ps <= PI*32; ps+= .1) {
@@ -214,6 +267,7 @@ int main(void) {
 //	Test_Waveform_Anim();
 //      Test_Oscillator();
 //        Test_Oscillators();
-	Test_Banks();
+//	Test_Bank();
+Test_Invert_Axes();
 	
 }

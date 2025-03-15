@@ -2,6 +2,7 @@
 #include <vector>
 #include <cmath>
 #include "Bank.h"
+#include "Oscill.h"
 
 using namespace std;
 
@@ -34,6 +35,14 @@ bool Bank::range(void) {
 
 	for (int count = osc_count-1; count >= 0; count--) {
 		inrange = osc_ary[count].range();
+
+		// if an oscillator is in "one-shot" mode it stops oscillating after it completes its cycle/range.
+		if (osc_ary[count].continuous == CONTINUOUS)
+		{
+			if (inrange == false)
+				osc_ary[count].reset();
+		}
+
 		x += int(osc_ary[count].chan1);
 		y += int(osc_ary[count].chan2);
 	}
@@ -49,6 +58,10 @@ void Bank::clear(void) {
 }
 void Bank::dump(void) {
 	surface->dump();
+}
+
+void Bank::setColor(int color) {
+	surface->setColor(color);
 }
 
 Oscill *Bank::oscillatorAt(int index) {

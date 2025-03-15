@@ -6,6 +6,7 @@
 #include "Sin.h"
 #include "Cos.h"
 
+enum OSCILL_PERSIST { ONESHOT, CONTINUOUS };	// basically oscillator persistance is either 0=false or 1=true!
 
 // range over which an oscillator operates when iterated
 class Range
@@ -36,6 +37,7 @@ private:
 	bool axis_swap;		// normally, sin is plotted on the x axis w/ cos on the y axis.  if true, the axes are inverted.
 public:
 	float chan1, chan2;
+	OSCILL_PERSIST continuous;	/** signify whether this is a one-shot oscillator of if it runs continuously */
 
 	Oscill();
 	Oscill(float rate);
@@ -52,8 +54,8 @@ public:
 
 	virtual bool range(void);
 
-	/** set sin wave phase for quadature oscillator */
-	virtual void setPhase(float phase);
+	/** oscillators either run oneshot (one cycle or range) or they run continuously */
+	virtual void setContinous(OSCILL_PERSIST persist);
 
 	/** set sin wave phase for only the first oscillator */
 	virtual void setPhaseO1(float phase);

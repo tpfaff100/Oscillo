@@ -16,9 +16,17 @@ public:
 	~Bank();
 	Bank(Oscill *ary, int count);
 
+	/** clear the bitmap */
 	virtual void clear(void);
+
+	/** draw the bitmap */
 	virtual void dump(void);
+
+	/** range() returns true until trigonometry range cycle is completed then returns false */
         virtual bool range(void);
+
+	/** set drawing color for waveform on screen */
+	virtual void setColor(int color);
 
 	virtual Oscill *oscillatorAt(int index); 
 };

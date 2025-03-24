@@ -51,9 +51,9 @@ void Text_Color() {
 	osc_ary[0].setScale(50);
 	osc_ary[0].swap();
 
-
-	while(1) {
+	for (float loopval = 0; loopval < 2; loopval+=.001) {
 		while(bank1->range());          // do until specified range is exceeded in osc 0.
+		bank1->setColorModulation(true, green, blue, loopval);
 		bank1->dump();
 		usleep(DELAY);
 		std::system("clear");

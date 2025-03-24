@@ -47,7 +47,7 @@ void Test_Color() {
 	Oscill osc_ary[] = { Oscill(0.010f), Oscill(0.02f) };
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
-	bank1->setColorModulation(true, green, blue, .2);	/* optional, color modulation is off by default */
+	bank1->setColorModulation(true, green, blue, .01);	/* optional, color modulation is off by default */
 
 	osc_ary[0].setScale(50);
 	osc_ary[0].swap();
@@ -83,8 +83,10 @@ void Test_Invert_Axes() {
 //	Oscill osc_ary[] = { Oscill(0.120f), Oscill(0.200f) };
 //	Oscill osc_ary[] = { Oscill(0.030f), Oscill(0.050f) };
 	Oscill osc_ary[] = { Oscill(0.00150f), Oscill(0.0025f) };
+//	Oscill osc_ary[] = { Oscill(0.00150f), Oscill(0.003f) };
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
+        bank1->setColorModulation(true, white, red, .0015);       /* optional, color modulation is off by default */
 
 	osc_ary[0].setScale(50);
 	osc_ary[0].swap();
@@ -94,7 +96,7 @@ void Test_Invert_Axes() {
 	osc_ary[1].setScale(20);
 //	osc_ary[2].setScale(100);
 
-	for (int count = 0; count < PI*2; count++) {
+//	for (int count = 0; count < PI*2; count++) {
 		for (float ps = 0; ps <= PI*8; ps+= .01) {
 			usleep(DELAY);
 			std::system("clear");
@@ -103,7 +105,7 @@ void Test_Invert_Axes() {
 			while(bank1->range());		// do until specified range is exceeded in osc 0.
 			bank1->dump();
 		}
-	}
+//	}
 
 	delete bank1;
 }
@@ -302,6 +304,6 @@ int main(void) {
 //      Test_Oscillator();
 //      Test_Oscillators();
 //	Test_Bank();
-//	Test_Invert_Axes();
-	Test_Color();
+	Test_Invert_Axes();
+//	Test_Color();
 }

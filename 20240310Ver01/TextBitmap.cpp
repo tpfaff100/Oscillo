@@ -19,20 +19,6 @@ void TextBitmap::setColor(bool color_mod_enable, Color color, Color altcolor) {
 }
 
 void TextBitmap::dump(void) {
-/*
-	switch(color)
-	{
-	    case black 	: std::cout << TEXT_COLOR_BLACK;	break;
-	    case red 	: std::cout << TEXT_COLOR_RED;   	break;
-	    case green 	: std::cout << TEXT_COLOR_GREEN;	break;
-	    case yellow : std::cout << TEXT_COLOR_YELLOW;	break;
-	    case blue 	: std::cout << TEXT_COLOR_BLUE;		break;
-	    case purple : std::cout << TEXT_COLOR_PURPLE;	break;
-	    case cyan 	: std::cout << TEXT_COLOR_CYAN;		break;
-	    case white	: std::cout << TEXT_COLOR_WHITE;	break;
-	    default	: std::cout << TEXT_COLOR_GREEN;	break;
-	}
-*/
 	int currColor = color1;
 
 	if (color_mod_enable == true) {
@@ -41,14 +27,21 @@ void TextBitmap::dump(void) {
 				u1 pixel = bmap[x][y];
 
 				if (pixel== '*')
-					currColor=green;
+					currColor=color1;
 				else
-					currColor=cyan;
-
-				if (currColor == green)
-					printf("%s%c%c", TEXT_COLOR_GREEN, pixel, pixel);
-				else
-					printf("%s%c%c", TEXT_COLOR_BLUE, pixel, pixel);
+					currColor=color2;
+				
+				switch(currColor) {
+					case black:	printf("  ");							break;
+					case red: 	printf("%s%c%c", TEXT_COLOR_RED, pixel, pixel);			break;
+					case green: 	printf("%s%c%c", TEXT_COLOR_GREEN, pixel, pixel);		break;
+					case blue: 	printf("%s%c%c", TEXT_COLOR_BLUE, pixel, pixel);		break;
+					case purple: 	printf("%s%c%c", TEXT_COLOR_PURPLE, pixel, pixel);		break;
+					case yellow: 	printf("%s%c%c", TEXT_COLOR_YELLOW, pixel, pixel);		break;
+					case cyan: 	printf("%s%c%c", TEXT_COLOR_CYAN, pixel, pixel);		break;
+					case white: 	printf("%s%c%c", TEXT_COLOR_WHITE, pixel, pixel);		break;
+					default: 	printf("%s%c%c", TEXT_COLOR_GREEN, pixel, pixel);		break;
+				}
 			}
 			printf("\n");
 		}

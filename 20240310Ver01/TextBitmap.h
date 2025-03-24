@@ -22,11 +22,12 @@ enum Color { black, red, green, yellow, blue, purple, cyan, white };
 class TextBitmap {
 public:
 	u1 bmap[SCALE][SCALE];
-	int color;
+	int color1, color2;
+	bool color_mod_enable;
 
 	TextBitmap();
 	void clear(void);
-	void setColor(int color);
+	void setColor(bool color_mod_enable, Color color, Color altcolor);
 	void dump(void);
 };
 

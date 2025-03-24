@@ -40,12 +40,14 @@
 
 #define ASPECT_X	4
 #define ASPECT_Y	3	
-#define DELAY		40000
+#define DELAY		70000
 
 void Text_Color() {
 	Oscill osc_ary[] = { Oscill(0.010f), Oscill(0.02f) };
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
+	bank1->setColorModulation(true, green, blue, .2);	/* optional, color modulation is off by default */
+
 	osc_ary[0].setScale(50);
 	osc_ary[0].swap();
 
@@ -100,6 +102,7 @@ void Test_Bank() {
 	Oscill osc_ary[] = { Oscill(0.00101f), Oscill(0.001f), Oscill(0.00401f) };
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
+	bank1->setColorModulation(true, green, blue, .2);	/* optional, color modulation is off by default */
 
 	/* use one-shot oscillators (they stop after one cycle) */
 	osc_ary[0].setContinous(ONESHOT);

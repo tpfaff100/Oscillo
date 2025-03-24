@@ -20,8 +20,9 @@ Bank::Bank() {
 	osc_count = 0;
 	surface = NULL;
 
-	color_osc = new Square();	// oscillator used to implement color cycling.
-	color_osc->setIncRate(.2);
+	color_modulation_osc = new Square();	// oscillator used to implement color cycling.
+	color_modulation_osc->setIncRate(.2);
+	disable_color_mod = true;
 }
 
 Bank::Bank(Oscill *ary, int size) {
@@ -29,15 +30,16 @@ Bank::Bank(Oscill *ary, int size) {
 	osc_count = size;
 	surface = new TextBitmap();
 
-	color_osc = new Square();	// oscillator used to implement color cycling.
-	color_osc->setIncRate(.2);
+	color_modulation_osc = new Square();	// oscillator used to implement color cycling.
+	color_modulation_osc->setIncRate(.2);
+	disable_color_mod = true;
 }
 
 Bank::~Bank() {
 	if (surface != NULL)
 		delete surface;
-	if (color_osc != NULL)
-		delete color_osc;
+	if (color_modulation_osc != NULL)
+		delete color_modulation_osc;
 }
 
 
@@ -65,13 +67,18 @@ bool Bank::range(void) {
 	x = x / osc_count;
 	y = y / osc_count;
 
-	float foo = color_osc->next();
-	if (color_osc->next() > 0.0) 
-		surface->bmap[x][y] = '.';    // write a 'pixel' to the offscreen bitmap.
-	else
-		surface->bmap[x][y] = '*';    // write a 'pixel' to the offscreen bitmap.
+	color_modulation_osc->next();		// tickle the color modulation oscillator.
 
-        return inrange;		// use the 0th oscillator's range to determine completion.
+	if (disable_color_mod == false) {
+		if (color_modulation_osc->next() > 0.0) 
+			surface->bmap[x][y] = '.';    // write a 'pixel' to the offscreen bitmap.
+		else
+			surface->bmap[x][y] = '*';    // write a 'pixel' to the offscreen bitmap.
+
+	} else {
+		surface->bmap[x][y] = '*';	// colorless. Runs faster/cleaner w/ complex shapes.
+	}
+	return inrange;		// use the 0th oscillator's range to determine completion.
 }
 
 void Bank::clear(void) {
@@ -81,8 +88,10 @@ void Bank::dump(void) {
 	surface->dump();
 }
 
-void Bank::setColor(int color) {
-	surface->setColor(color);
+void Bank::setColorModulation(bool enable, Color color1, Color color2, float incrementRate) {
+	surface->setColor(enable, color1, color2);
+	color_modulation_osc->setIncRate(incrementRate);
+	disable_color_mod = !enable;
 }
 
 Oscill *Bank::oscillatorAt(int index) {

@@ -5,15 +5,17 @@
 using namespace std;
 
 TextBitmap::TextBitmap() {
-	setColor(green);
+	setColor(false, green, blue);		// set colors but disable color modulation by default.
 }
 
 void TextBitmap::clear(void) {
 	memset(bmap, ' ', SCALE*SCALE);		// clear the drawing surface
 };	
 
-void TextBitmap::setColor(int color) {
-	this->color = color;
+void TextBitmap::setColor(bool color_mod_enable, Color color, Color altcolor) {
+	this->color1 = color;
+	this->color2 = altcolor;
+	this->color_mod_enable = color_mod_enable;
 }
 
 void TextBitmap::dump(void) {
@@ -31,21 +33,34 @@ void TextBitmap::dump(void) {
 	    default	: std::cout << TEXT_COLOR_GREEN;	break;
 	}
 */
-	for (int y = 0; y < SCALE; y++) {
-		for (int x=0; x < SCALE; x++) {
-			u1 pixel = bmap[x][y];
+	int currColor = color1;
 
-			if (pixel== '*')
-				color=green;
-			else
-				color=blue;
+	if (color_mod_enable == true) {
+		for (int y = 0; y < SCALE; y++) {
+			for (int x=0; x < SCALE; x++) {
+				u1 pixel = bmap[x][y];
 
-			if (color == green)
-				printf("%s%c%c", TEXT_COLOR_GREEN, pixel, pixel);
-			else
-				printf("%s%c%c", TEXT_COLOR_BLUE, pixel, pixel);
+				if (pixel== '*')
+					currColor=green;
+				else
+					currColor=cyan;
+
+				if (currColor == green)
+					printf("%s%c%c", TEXT_COLOR_GREEN, pixel, pixel);
+				else
+					printf("%s%c%c", TEXT_COLOR_BLUE, pixel, pixel);
+			}
+			printf("\n");
 		}
-		printf("\n");
 	}
+	else {
 
+                for (int y = 0; y < SCALE; y++) {
+                        for (int x=0; x < SCALE; x++) {
+				register int pixel = bmap[x][y];
+				printf ("%c%c", pixel, pixel);
+			}
+			printf("\n");
+		}
+	}
 };

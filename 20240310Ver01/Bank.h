@@ -9,9 +9,11 @@ class Bank
 {
 private:
 	Oscill *osc_ary;
-	Square *color_osc;	/* waveform that generates color variance as the bank draws itself */
+	Square *color_modulation_osc;	/* waveform that generates color variance as the bank draws itself */
 	int osc_count;
 	TextBitmap *surface;
+
+	bool disable_color_mod;
 
 public:
 	Bank();
@@ -27,8 +29,7 @@ public:
 	/** range() returns true until trigonometry range cycle is completed then returns false */
         virtual bool range(void);
 
-	/** set drawing color for waveform on screen */
-	virtual void setColor(int color);
+	virtual void setColorModulation(bool enable, Color color1, Color color2, float incrementRate); 
 
 	virtual Oscill *oscillatorAt(int index); 
 };

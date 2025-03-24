@@ -42,7 +42,8 @@
 #define ASPECT_Y	3	
 #define DELAY		70000
 
-void Text_Color() {
+void Test_Color() {
+	float loopval;
 	Oscill osc_ary[] = { Oscill(0.010f), Oscill(0.02f) };
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
@@ -51,13 +52,23 @@ void Text_Color() {
 	osc_ary[0].setScale(50);
 	osc_ary[0].swap();
 
-	for (float loopval = 0; loopval < 2; loopval+=.001) {
-		while(bank1->range());          // do until specified range is exceeded in osc 0.
-		bank1->setColorModulation(true, green, blue, loopval);
-		bank1->dump();
-		usleep(DELAY);
-		std::system("clear");
-		bank1->clear();
+	while(1) {
+		for (loopval = 0; loopval < PI/32; loopval+=.001) {
+			while(bank1->range());          // do until specified range is exceeded in osc 0.
+			bank1->setColorModulation(true, green, blue, loopval);
+			bank1->dump();
+			usleep(DELAY);
+			std::system("clear");
+			bank1->clear();
+		}
+		for (loopval = PI/32; loopval > 0; loopval-= .001) {
+			while(bank1->range());          // do until specified range is exceeded in osc 0.
+			bank1->setColorModulation(true, green, blue, loopval);
+			bank1->dump();
+			usleep(DELAY);
+			std::system("clear");
+			bank1->clear();
+		}
 	}
 
         delete bank1;
@@ -83,7 +94,7 @@ void Test_Invert_Axes() {
 	osc_ary[1].setScale(20);
 //	osc_ary[2].setScale(100);
 
-	for (int count = 0; count < 2; count++) {
+	for (int count = 0; count < PI*2; count++) {
 		for (float ps = 0; ps <= PI*8; ps+= .01) {
 			usleep(DELAY);
 			std::system("clear");
@@ -292,5 +303,5 @@ int main(void) {
 //      Test_Oscillators();
 //	Test_Bank();
 //	Test_Invert_Axes();
-	Text_Color();
+	Test_Color();
 }

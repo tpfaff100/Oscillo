@@ -17,7 +17,8 @@ void TextBitmap::setColor(int color) {
 }
 
 void TextBitmap::dump(void) {
-/*	switch(color)
+/*
+	switch(color)
 	{
 	    case black 	: std::cout << TEXT_COLOR_BLACK;	break;
 	    case red 	: std::cout << TEXT_COLOR_RED;   	break;
@@ -32,8 +33,17 @@ void TextBitmap::dump(void) {
 */
 	for (int y = 0; y < SCALE; y++) {
 		for (int x=0; x < SCALE; x++) {
-			printf("%c", bmap[x][y]);
-			printf("%c", bmap[x][y]);
+			u1 pixel = bmap[x][y];
+
+			if (pixel== '*')
+				color=green;
+			else
+				color=blue;
+
+			if (color == green)
+				printf("%s%c%c", TEXT_COLOR_GREEN, pixel, pixel);
+			else
+				printf("%s%c%c", TEXT_COLOR_BLUE, pixel, pixel);
 		}
 		printf("\n");
 	}

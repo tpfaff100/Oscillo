@@ -1,3 +1,12 @@
+/** 
+ **
+ ** A bank of oscillators is a collection of quadratture oscillators that can be mixed together to 
+ ** generate output on the x+y axis for one channel or mix of signals.  In a real laser 
+ ** imagine system, this could be a group of x/y galvonometer scanners that project a laser
+ ** onto a wall or screen.  A second laser signal/mix would go into another bank. 
+ **
+ */
+
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -6,22 +15,29 @@
 
 using namespace std;
 
-/** Does nothing for now.  Not a complete bank config!  */
 Bank::Bank() {
 	osc_ary = NULL;
 	osc_count = 0;
 	surface = NULL;
+
+	color_osc = new Square();	// oscillator used to implement color cycling.
+	color_osc->setIncRate(.2);
 }
 
 Bank::Bank(Oscill *ary, int size) {
 	osc_ary = ary;
 	osc_count = size;
 	surface = new TextBitmap();
+
+	color_osc = new Square();	// oscillator used to implement color cycling.
+	color_osc->setIncRate(.2);
 }
 
 Bank::~Bank() {
 	if (surface != NULL)
 		delete surface;
+	if (color_osc != NULL)
+		delete color_osc;
 }
 
 
@@ -34,7 +50,7 @@ bool Bank::range(void) {
 	int x = 0, y = 0;
 
 	for (int count = osc_count-1; count >= 0; count--) {
-		inrange = osc_ary[count].range();
+		inrange = osc_ary[count].range();	// iterate quadrature oscillators.
 
 		// if an oscillator is in "one-shot" mode it stops oscillating after it completes its cycle/range.
 		if (osc_ary[count].continuous == CONTINUOUS)
@@ -48,7 +64,12 @@ bool Bank::range(void) {
 	}
 	x = x / osc_count;
 	y = y / osc_count;
-	surface->bmap[x][y] = '*';    // write a 'pixel' to the offscreen bitmap.
+
+	float foo = color_osc->next();
+	if (color_osc->next() > 0.0) 
+		surface->bmap[x][y] = '.';    // write a 'pixel' to the offscreen bitmap.
+	else
+		surface->bmap[x][y] = '*';    // write a 'pixel' to the offscreen bitmap.
 
         return inrange;		// use the 0th oscillator's range to determine completion.
 }

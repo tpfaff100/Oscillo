@@ -3,11 +3,13 @@
 
 #include "Oscill.h"
 #include "TextBitmap.h"
+#include "Square.h"
 
 class Bank
 {
 private:
 	Oscill *osc_ary;
+	Square *color_osc;	/* waveform that generates color variance as the bank draws itself */
 	int osc_count;
 	TextBitmap *surface;
 

@@ -1,7 +1,7 @@
 #ifndef OSCILL_H
 #define OSCILL_H
 
-#define SCALE           60 
+#define SCALE           80 
 
 #include "Sin.h"
 #include "Cos.h"
@@ -36,7 +36,7 @@ private:
 	_osc_unit *o;
 	bool axis_swap;		// normally, sin is plotted on the x axis w/ cos on the y axis.  if true, the axes are inverted.
 public:
-	float chan1, chan2;
+	float chan1, chan2, chan3;
 	OSCILL_PERSIST continuous;	/** signify whether this is a one-shot oscillator of if it runs continuously */
 
 	Oscill();
@@ -60,7 +60,7 @@ public:
 	/** set sin wave phase for only the first oscillator */
 	virtual void setPhaseO1(float phase);
 
-	/** set sin wave phase for only the second oscillator */
+	/** set cos wave phase for only the second oscillator */
 	virtual void setPhaseO2(float phase);
 
 	virtual void setRange(float low, float high);

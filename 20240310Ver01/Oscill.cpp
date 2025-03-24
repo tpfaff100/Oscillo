@@ -2,9 +2,6 @@
 #include <vector>
 #include <cmath>
 #include "Oscill.h"
-#include "Sin.h"
-#include "Cos.h"
-
 
 using namespace std;
 
@@ -28,6 +25,7 @@ Oscill::Oscill() {
 
 	axis_swap = false;		/* do not swap sin/cos across x/y axis by default */
 	continuous = CONTINUOUS;	/* prep for CONTINUOUS waveform generation, not a ONESHOT cycle */
+
 	chan1 = 0.0f;		/* these work out to integers and could be reconfigured as INT - optional compile time option maybe? */
 	chan2 = 0.0f;
 }
@@ -56,13 +54,14 @@ Oscill::~Oscill() {
 		delete o->sin;
 	if (o->cos != NULL)
 		delete o->cos;
+
 	if (o != NULL)
 		delete o;
 }
 
 void Oscill::reset() {
 	o->sin->reset();
-	o->cos->reset();	
+	o->cos->reset();
 }
 
 
@@ -125,6 +124,4 @@ void Oscill::next(void) {
 	chan1 = SCALE/2 + chan1 / 2;
 	chan2 = SCALE/2 + chan2 / 2;
 }
-
-
 

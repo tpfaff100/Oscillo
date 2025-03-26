@@ -47,15 +47,17 @@ void Test_Color() {
 	Oscill osc_ary[] = { Oscill(0.010f), Oscill(0.02f) };
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
-	bank1->setColorModulation(true, green, blue, .01);	/* optional, color modulation is off by default */
+	bank1->setColorModulation(true, red, purple, .01);	/* optional, color modulation is off by default */
 
 	osc_ary[0].setScale(50);
 	osc_ary[0].swap();
 
+	Color c1=green, c2=blue;
+
 	while(1) {
 		for (loopval = 0; loopval < PI/32; loopval+=.001) {
 			while(bank1->range());          // do until specified range is exceeded in osc 0.
-			bank1->setColorModulation(true, green, blue, loopval);
+			bank1->setColorModulation(true, c1, c2, loopval);
 			bank1->dump();
 			usleep(DELAY);
 			std::system("clear");
@@ -63,7 +65,7 @@ void Test_Color() {
 		}
 		for (loopval = PI/32; loopval > 0; loopval-= .001) {
 			while(bank1->range());          // do until specified range is exceeded in osc 0.
-			bank1->setColorModulation(true, green, blue, loopval);
+			bank1->setColorModulation(true, c1, c2, loopval);
 			bank1->dump();
 			usleep(DELAY);
 			std::system("clear");
@@ -304,6 +306,6 @@ int main(void) {
 //      Test_Oscillator();
 //      Test_Oscillators();
 //	Test_Bank();
-	Test_Invert_Axes();
-//	Test_Color();
+//	Test_Invert_Axes();
+	Test_Color();
 }

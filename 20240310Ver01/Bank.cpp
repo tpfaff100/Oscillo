@@ -20,9 +20,13 @@ Bank::Bank() {
 	osc_count = 0;
 	surface = NULL;
 
-	color_modulation_osc = new Square();	// oscillator used to implement color cycling.
-	color_modulation_osc->setIncRate(.2);
+	color_mod_waveform = new Square();	// waveform used to implement color cycling.
+	color_mod_waveform->setIncRate(.2);
 	disable_color_mod = true;
+
+	amplitude_waveform = new Square();
+	amplitude_waveform->setIncRate(.01);
+
 }
 
 Bank::Bank(Oscill *ary, int size) {
@@ -30,16 +34,21 @@ Bank::Bank(Oscill *ary, int size) {
 	osc_count = size;
 	surface = new TextBitmap();
 
-	color_modulation_osc = new Square();	// oscillator used to implement color cycling.
-	color_modulation_osc->setIncRate(.2);
+	color_mod_waveform = new Square();	// oscillator used to implement color cycling.
+	color_mod_waveform->setIncRate(.2);
 	disable_color_mod = true;
+	
+	amplitude_waveform = new Square();
+	amplitude_waveform->setIncRate(.01);
 }
 
 Bank::~Bank() {
 	if (surface != NULL)
 		delete surface;
-	if (color_modulation_osc != NULL)
-		delete color_modulation_osc;
+	if (color_mod_waveform != NULL)
+		delete color_mod_waveform;
+	if (amplitude_waveform != NULL)
+		delete amplitude_waveform;
 }
 
 
@@ -67,15 +76,28 @@ bool Bank::range(void) {
 	x = x / osc_count;
 	y = y / osc_count;
 
-	color_modulation_osc->next();		// tickle the color modulation oscillator.
+	float foo = 1.0f+amplitude_waveform->next();
+printf("%f\n", foo);
+
+/*	x = (int) ((float) foo * x);
+	y = (int) ((float) foo * y);
+
+	x = x / 2;
+	y = y / 2;
+
+	x += 20;
+	y += 80;
+*/	
+	amplitude_waveform->next();
 
 	if (disable_color_mod == false) {
-		if (color_modulation_osc->next() > 0.0) 
+		color_mod_waveform->next();		// tickle the color modulation oscillator.
+		if (color_mod_waveform->next() > 0.0) 
 			surface->bmap[x][y] = '.';    // write a 'pixel' to the offscreen bitmap.
 		else
 			surface->bmap[x][y] = '*';    // write a 'pixel' to the offscreen bitmap.
 
-	} else {
+	} else {				// no color modulation so let's keep it simple!
 		surface->bmap[x][y] = '*';	// colorless. Runs faster/cleaner w/ complex shapes.
 	}
 	return inrange;		// use the 0th oscillator's range to determine completion.
@@ -90,7 +112,7 @@ void Bank::dump(void) {
 
 void Bank::setColorModulation(bool enable, Color color1, Color color2, float incrementRate) {
 	surface->setColor(enable, color1, color2);
-	color_modulation_osc->setIncRate(incrementRate);
+	color_mod_waveform->setIncRate(incrementRate);
 	disable_color_mod = !enable;
 }
 

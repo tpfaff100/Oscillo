@@ -4,6 +4,15 @@
 
 using namespace std;
 
+/** This module treats a 2D array like a frame buffer.  The framebuffer is written into by the
+ ** 'Bank' object, then rendered here.  This text based 'framebuffer' can currently handle
+ ** 2 colors from a palette of 16.  We could do better (at least 4 colors out of 16).
+ **
+ ** If you use BLACK as a color you can see harmonics effects that are quivalent to the 
+ ** technique known as "control blanking" in a real laser imaging system.
+ **
+ */
+
 TextBitmap::TextBitmap() {
 	setColor(false, green, blue);		// set colors but disable color modulation by default.
 }

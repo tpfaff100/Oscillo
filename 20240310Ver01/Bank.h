@@ -9,11 +9,13 @@ class Bank
 {
 private:
 	Oscill *osc_ary;
-	Square *color_modulation_osc;	/* waveform that generates color variance as the bank draws itself */
+	Square *color_mod_waveform; 	/* waveform that generates color variance as the bank draws itself */
+	Square *amplitude_waveform;	/* modulate the output of the bank with an amplitude based oscillator */
 	int osc_count;
 	TextBitmap *surface;
 
 	bool disable_color_mod;
+
 
 public:
 	Bank();

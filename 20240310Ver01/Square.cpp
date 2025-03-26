@@ -4,11 +4,15 @@
 
 using namespace std;
 
+float Square::eval() {
+	return sin( current + radians + phase );
+};
+
 float Square::eval(float radians) {
 	return sin(radians);
 };
 
 float Square::next() {
 	current += incrate;
-	return sin( current + radians + phase);
+	return sin( current + radians + phase );
 };

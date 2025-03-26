@@ -35,7 +35,7 @@ Bank::Bank(Oscill *ary, int size) {
 	surface = new TextBitmap();
 
 	color_mod_waveform = new Square();	// oscillator used to implement color cycling.
-	color_mod_waveform->setIncRate(.2);
+	color_mod_waveform->setIncRate(.02);
 	disable_color_mod = true;
 	
 	amplitude_waveform = new Square();
@@ -66,8 +66,10 @@ bool Bank::range(void) {
 		// if an oscillator is in "one-shot" mode it stops oscillating after it completes its cycle/range.
 		if (osc_ary[count].continuous == CONTINUOUS)
 		{
-			if (inrange == false)
-				osc_ary[count].reset();
+			if (inrange == false) {		// this should only happen once an animation frame ==> not wasting a lot of cycles here.
+				osc_ary[count].setScale(SCALE*amplitude_waveform->next());	// tickle the amplitude waveform oscillator once every animation frame.
+				osc_ary[count].reset();	
+			}
 		}
 
 		x += int(osc_ary[count].chan1);
@@ -76,22 +78,13 @@ bool Bank::range(void) {
 	x = x / osc_count;
 	y = y / osc_count;
 
-//	float foo = 1.0f+amplitude_waveform->next();
-//printf("%f\n", foo);
+//not really useful this scales from origin but left here just as an example of how to do this.
+//	float scalar = amplitude_waveform->eval();// determine x/y scaling value from oscillator for the current aniimation fram for the current aniimation framee.
+//	x = (int) ( (float) scalar * (float)x);
+//	y = (int) ( (float) scalar * (float)y);
 
-/*	x = (int) ((float) foo * x);
-	y = (int) ((float) foo * y);
-
-	x = x / 2;
-	y = y / 2;
-
-	x += 20;
-	y += 80;
-*/	
-	amplitude_waveform->next();
-
+	color_mod_waveform->next();		// tickle the color modulation oscillator.
 	if (disable_color_mod == false) {
-		color_mod_waveform->next();		// tickle the color modulation oscillator.
 		if (color_mod_waveform->next() > 0.0) 
 			surface->bmap[x][y] = '.';    // write a 'pixel' to the offscreen bitmap.
 		else

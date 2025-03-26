@@ -7,6 +7,7 @@ class Square : public Trig
 {
 
 public:
+	float eval();
 	float eval(float);
 	float next(void);
 };

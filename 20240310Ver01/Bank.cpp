@@ -26,6 +26,7 @@ Bank::Bank() {
 
 	amplitude_waveform = new Square();
 	amplitude_waveform->setIncRate(.01);
+	disable_amplitude = true;
 
 }
 
@@ -40,6 +41,7 @@ Bank::Bank(Oscill *ary, int size) {
 	
 	amplitude_waveform = new Square();
 	amplitude_waveform->setIncRate(.01);
+	disable_amplitude = true;
 }
 
 Bank::~Bank() {
@@ -67,7 +69,9 @@ bool Bank::range(void) {
 		if (osc_ary[count].continuous == CONTINUOUS)
 		{
 			if (inrange == false) {		// this should only happen once an animation frame ==> not wasting a lot of cycles here.
-				osc_ary[count].setScale(SCALE*amplitude_waveform->next());	// tickle the amplitude waveform oscillator once every animation frame.
+				if (!disable_amplitude) { 	// tickle the amplitude waveform oscillator once every animation frame.
+					osc_ary[count].setScale(SCALE*amplitude_waveform->next());	
+				}
 //check
 //printf("%f\n", SCALE*amplitude_waveform->next());
 				osc_ary[count].reset();	
@@ -111,6 +115,12 @@ void Bank::setColorModulation(bool enable, Color color1, Color color2, float inc
 	color_mod_waveform->setIncRate(incrementRate);
 	disable_color_mod = !enable;
 }
+
+void Bank::setAmplitudeModulation(bool enable)
+{
+	disable_amplitude = !enable;
+}
+
 
 Oscill *Bank::oscillatorAt(int index) {
 	return osc_ary+index;

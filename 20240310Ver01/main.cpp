@@ -44,10 +44,12 @@
 
 void Test_Color() {
 	float loopval;
-	Oscill osc_ary[] = { Oscill(0.010f), Oscill(0.02f) };
+//	Oscill osc_ary[] = { Oscill(0.010f), Oscill(0.02f) };
+	Oscill osc_ary[] = { Oscill(0.01f), Oscill(0.02f), Oscill(0.0201f), Oscill(0.0202f) };
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
 	bank1->setColorModulation(true, red, purple, .01);	/* optional, color modulation is off by default */
+	bank1->setAmplitudeModulation(true);
 
 	osc_ary[0].setScale(50);
 	osc_ary[0].swap();

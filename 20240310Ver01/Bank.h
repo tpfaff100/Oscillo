@@ -15,7 +15,7 @@ private:
 	TextBitmap *surface;
 
 	bool disable_color_mod;
-
+	bool disable_amplitude;
 
 public:
 	Bank();
@@ -32,6 +32,7 @@ public:
         virtual bool range(void);
 
 	virtual void setColorModulation(bool enable, Color color1, Color color2, float incrementRate); 
+	virtual void setAmplitudeModulation(bool enable);
 
 	virtual Oscill *oscillatorAt(int index); 
 };

@@ -68,6 +68,8 @@ bool Bank::range(void) {
 		{
 			if (inrange == false) {		// this should only happen once an animation frame ==> not wasting a lot of cycles here.
 				osc_ary[count].setScale(SCALE*amplitude_waveform->next());	// tickle the amplitude waveform oscillator once every animation frame.
+//check
+//printf("%f\n", SCALE*amplitude_waveform->next());
 				osc_ary[count].reset();	
 			}
 		}
@@ -83,7 +85,8 @@ bool Bank::range(void) {
 //	x = (int) ( (float) scalar * (float)x);
 //	y = (int) ( (float) scalar * (float)y);
 
-	color_mod_waveform->next();		// tickle the color modulation oscillator.
+//check - am calling this twice.  Fix later  (TCP  3/26)
+//	color_mod_waveform->next();		// tickle the color modulation oscillator.
 	if (disable_color_mod == false) {
 		if (color_mod_waveform->next() > 0.0) 
 			surface->bmap[x][y] = '.';    // write a 'pixel' to the offscreen bitmap.

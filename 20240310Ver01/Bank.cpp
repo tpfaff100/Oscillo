@@ -76,8 +76,8 @@ bool Bank::range(void) {
 	x = x / osc_count;
 	y = y / osc_count;
 
-	float foo = 1.0f+amplitude_waveform->next();
-printf("%f\n", foo);
+//	float foo = 1.0f+amplitude_waveform->next();
+//printf("%f\n", foo);
 
 /*	x = (int) ((float) foo * x);
 	y = (int) ((float) foo * y);

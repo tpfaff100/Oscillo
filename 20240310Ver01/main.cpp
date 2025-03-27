@@ -35,6 +35,7 @@
 #include "Cos.h"
 #include "Oscill.h"		/* Oscillator containing waveform type an her attributes */
 #include "Bank.h"		/* Bank of oscillators we can select and iterate through */
+#include "Sprite.h"
 #include "TextBitmap.h"		/* Get the list of colors we can use for drawing */
 #include "Types.h"
 
@@ -42,10 +43,23 @@
 #define ASPECT_Y	3	
 #define DELAY		70000
 
+
+void Test_Sprite() {
+	std::string filename = "globe.vt";
+	Sprite *sprite = new Sprite(filename, 23);
+
+	for (int count = 0; count < 1024; count++) {
+		std::string frame = sprite->eval(count);
+		usleep(DELAY);
+		std::cout << frame;
+	}
+
+}
+
 void Test_Color() {
 	float loopval;
 //	Oscill osc_ary[] = { Oscill(0.010f), Oscill(0.02f) };
-	Oscill osc_ary[] = { Oscill(0.01f), Oscill(0.02f), Oscill(0.0201f), Oscill(0.0202f) };
+	Oscill osc_ary[] = { Oscill(0.01f), Oscill(0.02f), Oscill(0.0201f), Oscill(0.0202f) };	// Breathe
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
 	bank1->setColorModulation(true, red, purple, .01);	/* optional, color modulation is off by default */
@@ -119,7 +133,7 @@ void Test_Bank() {
 	Oscill osc_ary[] = { Oscill(0.00101f), Oscill(0.001f), Oscill(0.00401f) };
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
-	bank1->setColorModulation(true, green, blue, .2);	/* optional, color modulation is off by default */
+	bank1->setColorModulation(true, green, blue, .1);	/* optional, color modulation is off by default */
 
 	/* use one-shot oscillators (they stop after one cycle) */
 	osc_ary[0].setContinous(ONESHOT);
@@ -309,5 +323,6 @@ int main(void) {
 //      Test_Oscillators();
 //	Test_Bank();
 //	Test_Invert_Axes();
-	Test_Color();
+//	Test_Color();
+	Test_Sprite();
 }

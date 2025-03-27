@@ -57,28 +57,32 @@ Bank::~Bank() {
 		delete amplitude_waveform;
 }
 
+#define BX	20
+
 // draw a 1980s vt100 animation sprite frame into the text framebuffer.
 void Bank::renderSpriteOffscreen(Sprite *sprite) {
         if (sprite != NULL) {
                 const char *frame = sprite->next().c_str();     // well, this is a reach...
                 int height = sprite->frame_height;
-                int bx = 20, by = 20;
-                char pixel;
-                frame+=6;
+                int bx = BX, by = 40;
+                char pixel = ' ';
+
+//              cout << frame;		// test here.
 
                 // xfer the antiquated vt100 frame to our super high-tech framebuffer!
                 for (int row = 0; row < height; row++) {
                         do {
                                 pixel = *frame++;
+
                                 surface->bmap[bx++][by] = pixel;
 //printf("%d  %d  %c\n", bx, by, pixel);
                         } while( pixel != '\n');
-			frame++;
-                        bx = 0;
+
+			surface->bmap[bx-1][by] = ' ';
+                        bx = BX;
                         by++;
                 }
 
-//              cout << frame;
         }
 }
 
@@ -92,7 +96,6 @@ bool Bank::range(void) {
 
 	if (sprite != NULL) 
 		renderSpriteOffscreen(this->sprite);
-	
 
 	for (int count = osc_count-1; count >= 0; count--) {
 		inrange = osc_ary[count].range();	// iterate quadrature oscillators.

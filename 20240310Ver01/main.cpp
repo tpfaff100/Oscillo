@@ -36,7 +36,6 @@
 #include "Oscill.h"		/* Oscillator containing waveform type an her attributes */
 #include "Bank.h"		/* Bank of oscillators we can select and iterate through */
 #include "Sprite.h"
-#include "TextBitmap.h"		/* Get the list of colors we can use for drawing */
 #include "Types.h"
 
 #define ASPECT_X	4
@@ -46,14 +45,31 @@
 
 void Test_Sprite() {
 	std::string filename = "globe.vt";
+	Oscill osc_ary[] = { Oscill(0.01f) };
+	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
+	Bank *bank1 = new Bank(osc_ary, osc_count);
 	Sprite *sprite = new Sprite(filename, 23);
+	Color c1=green, c2=blue;
 
+/*
+// optional:  Use this if you don't want to use the Bank object to manage the trig or animation.
 	for (int count = 0; count < 1024; count++) {
-		std::string frame = sprite->eval(count);
+		std::string frame = sprite->next();
 		usleep(DELAY);
 		std::cout << frame;
 	}
+*/
+	bank1->setSprite(sprite);
 
+	while(bank1->range()) {
+//		bank1->setColorModulation(true, c1, c2, .002);
+		bank1->dump();
+		usleep(DELAY);
+		std::system("clear");
+		bank1->clear();
+	}
+
+	delete bank1;
 }
 
 void Test_Color() {

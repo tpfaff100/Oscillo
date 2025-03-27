@@ -96,10 +96,9 @@ std::string Sprite::eval(int frameno) {
 }
 
 std::string Sprite::next() {
-//	cout << lineAt(sprite_map, frameno) << "\n\n";
+//	cout << lineAt(sprite_map, current) << "\n\n";
 	string frame = lineAt(sprite_map, current);
-	current++;
-	if (current > frame_total)
+	if (++current >= frame_total)
 		current = 0;
 	return frame;
 }

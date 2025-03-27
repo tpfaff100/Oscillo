@@ -8,8 +8,10 @@
  */
 
 #include <iostream>
+#include <string>
 #include <vector>
 #include <cmath>
+#include <stdio.h>
 #include "Bank.h"
 #include "Oscill.h"
 
@@ -19,12 +21,13 @@ Bank::Bank() {
 	osc_ary = NULL;
 	osc_count = 0;
 	surface = NULL;
+	sprite = NULL;
 
-	color_mod_waveform = new Square();	// waveform used to implement color cycling.
+	color_mod_waveform = new Triangle();	// waveform used to implement color cycling.
 	color_mod_waveform->setIncRate(.2);
 	disable_color_mod = true;
 
-	amplitude_waveform = new Square();
+	amplitude_waveform = new Triangle();
 	amplitude_waveform->setIncRate(.01);
 	disable_amplitude = true;
 
@@ -34,12 +37,13 @@ Bank::Bank(Oscill *ary, int size) {
 	osc_ary = ary;
 	osc_count = size;
 	surface = new TextBitmap();
+	sprite = NULL;
 
-	color_mod_waveform = new Square();	// oscillator used to implement color cycling.
+	color_mod_waveform = new Triangle();	// oscillator used to implement color cycling.
 	color_mod_waveform->setIncRate(.02);
 	disable_color_mod = true;
 	
-	amplitude_waveform = new Square();
+	amplitude_waveform = new Triangle();
 	amplitude_waveform->setIncRate(.01);
 	disable_amplitude = true;
 }
@@ -53,6 +57,30 @@ Bank::~Bank() {
 		delete amplitude_waveform;
 }
 
+// draw a 1980s vt100 animation sprite frame into the text framebuffer.
+void Bank::renderSpriteOffscreen(Sprite *sprite) {
+        if (sprite != NULL) {
+                const char *frame = sprite->next().c_str();     // well, this is a reach...
+                int height = sprite->frame_height;
+                int bx = 20, by = 20;
+                char pixel;
+                frame+=6;
+
+                // xfer the antiquated vt100 frame to our super high-tech framebuffer!
+                for (int row = 0; row < height; row++) {
+                        do {
+                                pixel = *frame++;
+                                surface->bmap[bx++][by] = pixel;
+//printf("%d  %d  %c\n", bx, by, pixel);
+                        } while( pixel != '\n');
+			frame++;
+                        bx = 0;
+                        by++;
+                }
+
+//              cout << frame;
+        }
+}
 
 
 /** call this until receiving a FALSE condition.  FALSE indicates the end of a cycle
@@ -61,6 +89,10 @@ Bank::~Bank() {
 bool Bank::range(void) {
 	bool inrange = false;
 	int x = 0, y = 0;
+
+	if (sprite != NULL) 
+		renderSpriteOffscreen(this->sprite);
+	
 
 	for (int count = osc_count-1; count >= 0; count--) {
 		inrange = osc_ary[count].range();	// iterate quadrature oscillators.
@@ -89,8 +121,6 @@ bool Bank::range(void) {
 //	x = (int) ( (float) scalar * (float)x);
 //	y = (int) ( (float) scalar * (float)y);
 
-//check - am calling this twice.  Fix later  (TCP  3/26)
-//	color_mod_waveform->next();		// tickle the color modulation oscillator.
 	if (disable_color_mod == false) {
 		if (color_mod_waveform->next() > 0.0) 
 			surface->bmap[x][y] = '.';    // write a 'pixel' to the offscreen bitmap.
@@ -100,14 +130,22 @@ bool Bank::range(void) {
 	} else {				// no color modulation so let's keep it simple!
 		surface->bmap[x][y] = '*';	// colorless. Runs faster/cleaner w/ complex shapes.
 	}
+
 	return inrange;		// use the 0th oscillator's range to determine completion.
 }
+
+
+
 
 void Bank::clear(void) {
 	surface->clear();
 }
 void Bank::dump(void) {
 	surface->dump();
+}
+
+void Bank::setSprite(Sprite *sprite) {
+	this->sprite = sprite;
 }
 
 void Bank::setColorModulation(bool enable, Color color1, Color color2, float incrementRate) {

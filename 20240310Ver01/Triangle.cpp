@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cmath>
-#include "Square.h"
+#include "Triangle.h"
 
 
 using namespace std;
@@ -22,7 +22,7 @@ Again, this time we use:f(x)=f(x+2T). Note: We keep translating x forward by 2T 
 Using the above two arguments we can create a function which will make any given function defined within [-T,T] and with a period 2*T a periodic function.
 */
 
-float f(float x){
+float f_tri(float x){
         if(x>=0 && x<PI) {
                 return x;
         }
@@ -30,20 +30,18 @@ float f(float x){
                 return 2*PI-x;
         }
         else if(x >= 2*PI) {
-                return f(x-2*PI);
+                return f_tri(x-2*PI);
         }
         else if(x < 0) {
-                return f(x+2*PI);
+                return f_tri(x+2*PI);
         }
         return 0.0f;
 }
 
 
-float Square::square(float radians) {
-        return f(radians*2)/4.0f;
+float Triangle::triangle(float radians) {
+        return f_tri(radians*2)/4.0f;
 }
-
-
 
 /*
 float square(float radians) {
@@ -54,17 +52,17 @@ float square(float radians) {
 }
 */
 
-float Square::eval() {
+float Triangle::eval() {
 //	return sin(current+radians+phase);
-	return square(current+radians+phase);
+	return triangle(current+radians+phase);
 //	return 0.6*asin(sin(2 * (PI / 2.0f) * (current+radians+phase)));
 };
 
-float Square::eval(float radians) {
+float Triangle::eval(float radians) {
 	return asin(sin(2 * (PI / 2.0f) * (radians)));
 };
 
-float Square::next() {
+float Triangle::next() {
 	current += incrate;
 //printf("%f  %f\n", sin(current+radians+phase), asin(sin(2 * (PI / 2.0f) * (current+radians+phase))));
 //	return triangle(current+radians+phase);

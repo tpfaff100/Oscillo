@@ -10,6 +10,9 @@ public:
 	float eval();
 	float eval(float);
 	float next(void);
+
+	float square(float radians);
+
 };
 
 #endif

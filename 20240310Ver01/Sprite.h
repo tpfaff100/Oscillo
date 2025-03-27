@@ -11,12 +11,13 @@
 class Sprite 
 {
         std::string sprite_map; // string containing the entire animation (all frames)
-	int frame_height;	// number of lines in each frame.
 	int frame_total;	// total number of frames in animation.
 	int size;		// number of bytes in the shape.
 	int current;		// specify the current frame # in the sprite animation.
 
 public:
+	int frame_height;	// number of lines in each frame.
+
 	Sprite();
 	Sprite(std::string filename, int height);
 	~Sprite();

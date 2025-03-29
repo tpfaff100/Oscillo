@@ -36,12 +36,20 @@
 #include "Oscill.h"		/* Oscillator containing waveform type an her attributes */
 #include "Bank.h"		/* Bank of oscillators we can select and iterate through */
 #include "Sprite.h"
+#include "Preset.h"
 #include "Types.h"
 
 #define ASPECT_X	4
 #define ASPECT_Y	3	
 #define DELAY		70000
 
+
+
+void Test_Preset() {
+	Preset *pr1 = new Preset("presets/Time.prs");
+	pr1->run();
+	free(pr1);
+}
 
 void Test_Sprite() {
 //	std::string filename = "anims/globe.vt";	//23
@@ -54,17 +62,17 @@ void Test_Sprite() {
 	Bank *bank1 = new Bank(osc_ary, osc_count);
 	Sprite *sprite = new Sprite(filename, 23);
 /*
-// optional:  Use this if you don't want to use the Bank object to manage the trig or animation.
+ * If you want to avoid using the Bank object with oscillators you can do this instead: *
 	for (int count = 0; count < 1024; count++) {
 		std::string frame = sprite->next();
 		usleep(DELAY);
 		std::cout << frame;
 	}
 */
-	bank1->setSprite(sprite);
+	bank1->setSprite(sprite);	// attach the animation to the oscillator bank.
 
 	while(bank1->range()) {
-		bank1->dump();
+		bank1->dump();		// iterate and draw waveforms and animation.
 		usleep(DELAY);
 		std::system("clear");
 		bank1->clear();
@@ -90,10 +98,10 @@ void Test_Color() {
 	while(1) {
 		for (loopval = 0; loopval < PI/32; loopval+=.001) {
 			while(bank1->range());          // do until specified range is exceeded in osc 0.
-			bank1->setColorModulation(true, c1, c2, loopval);
+			bank1->setColorModulation(true, c1, c2, loopval); // continuously changing color mod osc phase!
 			bank1->dump();
 			usleep(DELAY);
-			std::system("clear");
+//			std::system("clear");
 			bank1->clear();
 		}
 		for (loopval = PI/32; loopval > 0; loopval-= .001) {
@@ -118,6 +126,7 @@ void Test_Invert_Axes() {
 //	Oscill osc_ary[] = { Oscill(0.120f), Oscill(0.200f) };
 //	Oscill osc_ary[] = { Oscill(0.030f), Oscill(0.050f) };
 	Oscill osc_ary[] = { Oscill(0.00150f), Oscill(0.0025f) };
+//	Oscill osc_ary[] = { Oscill(0.00150f), Oscill(0.0025f), Oscill(0.00025f) };
 //	Oscill osc_ary[] = { Oscill(0.00150f), Oscill(0.003f) };
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);
@@ -126,21 +135,20 @@ void Test_Invert_Axes() {
 	osc_ary[0].setScale(50);
 	osc_ary[0].swap();
 
-
 	osc_ary[0].setScale(70);
 	osc_ary[1].setScale(20);
-//	osc_ary[2].setScale(100);
+//	osc_ary[2].setScale(50);
 
-//	for (int count = 0; count < PI*2; count++) {
-		for (float ps = 0; ps <= PI*8; ps+= .01) {
-			usleep(DELAY);
-			std::system("clear");
-			bank1->clear();
+//	osc_ary[2].setRate(.0005);
 
-			while(bank1->range());		// do until specified range is exceeded in osc 0.
-			bank1->dump();
-		}
-//	}
+	for (float ps = 0; ps <= PI*8; ps+= .01) {
+		usleep(DELAY);
+		std::system("clear");
+		bank1->clear();
+
+		while(bank1->range());		// do until specified range is exceeded in osc 0.
+		bank1->dump();
+	}
 
 	delete bank1;
 }
@@ -340,6 +348,7 @@ int main(void) {
 //      Test_Oscillators();
 //	Test_Bank();
 //	Test_Invert_Axes();
-//	Test_Color();
-	Test_Sprite();
+	Test_Color();
+//	Test_Sprite();
+//	Test_Preset();
 }

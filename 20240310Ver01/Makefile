@@ -2,7 +2,7 @@ CPPFLAGS=-g
 LDFLAGS=-g 
 LDLIBS=
 
-SRCS=Trig.cc Sin.cc Cos.cc Sprite.cc Square.cc Triangle.cc Oscill.cc Bank.cc TextBitmap.cc main.cc
+SRCS=Trig.cc Sin.cc Cos.cc Sprite.cc Square.cc Triangle.cc Oscill.cc Bank.cc TextBitmap.cc Preset.cc main.cc
 OBJS=$(subst .cc,.o,$(SRCS))
 
 Oscillo: $(OBJS)
@@ -31,6 +31,9 @@ Oscill.o: Oscill.cpp Oscill.h
 
 Bank.o: Bank.cpp Bank.h
 	g++ $(CPPFLAGS) -c Bank.cpp
+
+Preset.o: Preset.cpp Preset.h
+	g++ $(CPPFLAGS) -c Preset.cpp
 
 TextBitmap.o: TextBitmap.cpp TextBitmap.h
 	g++ $(CPPFLAGS) -c TextBitmap.cpp

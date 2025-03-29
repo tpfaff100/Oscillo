@@ -57,32 +57,30 @@ Bank::~Bank() {
 		delete amplitude_waveform;
 }
 
-#define BX	20
 
 // draw a 1980s vt100 animation sprite frame into the text framebuffer.
 void Bank::renderSpriteOffscreen(Sprite *sprite) {
         if (sprite != NULL) {
-                const char *frame = sprite->next().c_str();     // well, this is a reach...
+		string framestr = sprite->next();
                 int height = sprite->frame_height;
-                int bx = BX, by = 40;
+                int bx = SCALE/2 - sprite->frame_width/2, by = SCALE/2 - sprite->frame_height/2;
+		int resetx = bx;
                 char pixel = ' ';
 
-//              cout << frame;		// test here.
-
-                // xfer the antiquated vt100 frame to our super high-tech framebuffer!
+		int count = 0;
+                // xfer the antiquated vt100 frame to our super high-tech text framebuffer!
                 for (int row = 0; row < height; row++) {
                         do {
-                                pixel = *frame++;
-
-                                surface->bmap[bx++][by] = pixel;
-//printf("%d  %d  %c\n", bx, by, pixel);
+				if (by < SCALE && by > 0) {
+					pixel = framestr[count++];
+					surface->bmap[bx++][by] = pixel;
+				}
                         } while( pixel != '\n');
 
-			surface->bmap[bx-1][by] = ' ';
-                        bx = BX;
+			surface->bmap[bx-1][by] = ' ';	// remove the CR from the end of the line.
+                        bx = resetx;
                         by++;
                 }
-
         }
 }
 

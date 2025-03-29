@@ -44,10 +44,11 @@
 
 
 void Test_Sprite() {
-	std::string filename = "anims/globe.vt";	//23
+//	std::string filename = "anims/globe.vt";	//23
 //	std::string filename = "anims/prey.vt";		//20
 //	std::string filename = "anims/flatmap.vt";	//21
 //	std::string filename = "anims/sship.vt";	//16
+	std::string filename = "anims/movglobe.vt";	//16
 	Oscill osc_ary[] = { Oscill(0.01f) };
 	int osc_count = sizeof(osc_ary) / sizeof(osc_ary[0]);
 	Bank *bank1 = new Bank(osc_ary, osc_count);

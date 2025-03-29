@@ -17,6 +17,7 @@ class Sprite
 
 public:
 	int frame_height;	// number of lines in each frame.
+	int frame_width;	// MAXIMUM number of columns in a frame (note each line len varies in a frame).
 
 	Sprite();
 	Sprite(std::string filename, int height);

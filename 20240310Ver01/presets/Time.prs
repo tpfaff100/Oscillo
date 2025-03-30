@@ -1,7 +1,8 @@
 {
-	file="anims/movanim.vt",
-	delay="1s",
+	file="anims/movglobe.vt",
+	initial_delay="1s",
 	duration="19s",
-	preset_loop_yield="100000"
+	loop_yield_time="100ms",
+	osc1_inc_rate=".01"
 }
 	

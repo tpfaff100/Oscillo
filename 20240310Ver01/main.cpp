@@ -348,7 +348,7 @@ int main(void) {
 //      Test_Oscillators();
 //	Test_Bank();
 //	Test_Invert_Axes();
-	Test_Color();
+//	Test_Color();
 //	Test_Sprite();
-//	Test_Preset();
+	Test_Preset();
 }

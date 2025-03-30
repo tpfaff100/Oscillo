@@ -1,7 +1,9 @@
 #include <fstream>
 #include <iostream>     // std::cout
+#include <sstream>      // std::istringstream
 #include <string>       // std::string
 #include <map>
+#include <chrono>	// time functions
 #include <unistd.h>	// std::usleep
 
 #include "Preset.h"
@@ -12,7 +14,12 @@
 
 
 using namespace std;
+using namespace std::chrono;
 
+uint64_t timeSinceEpochMillisec() {
+	using namespace std::chrono;
+	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+}
 
 
 std::string trim(const std::string &s)
@@ -81,6 +88,21 @@ Preset::Preset(std::string filename) {
 	rfile.close();
 }
 
+// we get a tag/string with units in it.  We look at the units
+// and convert to milleseconds because that is what usleep() takes.
+// supported units:  (s)econds and (ms) milleseconds
+int Preset::unitsToms(string data, string tag) {
+        string num = first_number_in_str(appsets[tag]);
+        string units = first_units_in_str(appsets[tag]);
+        int time_in_ms = std::stoi(num);	// currently time in whatever units specified.
+	
+	if (units == "ms")			// now convert to milleseconds and return.
+		time_in_ms *= 1000;
+	if (units == "s")
+		time_in_ms *= 1000000;
+	return time_in_ms;
+}
+
 int Preset::run() {
 #if 0
 	cout << appsets["delay"] << "\n";
@@ -88,29 +110,23 @@ int Preset::run() {
 	cout << appsets["duration"] << "\n";
 #endif
 
-	string num = first_number_in_str(appsets[TAG_DELAY]);
-	string units = first_units_in_str(appsets[TAG_DELAY]);
-	int delay = std::stoi(num);
-
-	if (units == "ms")
-		delay *= 1000;
-	if (units == "s")
-		delay *= 1000000;
-
+	uint64_t delay = unitsToms( appsets["delay"], TAG_DELAY);
 	usleep(delay);
+	uint64_t duration = unitsToms( appsets["duration"], TAG_DURATION);
 
-	num = first_number_in_str(appsets[TAG_DURATION]);
-	units = first_units_in_str(appsets[TAG_DURATION]);
-	int duration = std::stoi(num);
+	std::cout << timeSinceEpochMillisec() << std::endl;
 
-	if (units == "ms")
-		duration *= 1000;
-	if (units == "s")
-		duration *= 1000000;
+	uint64_t expiry_time = timeSinceEpochMillisec() + duration, cur_time = -1;;
+cout << cur_time << "   " << expiry_time << "\n";
 
-//	usleep(duration);
+	do {
+		cur_time = timeSinceEpochMillisec();
+		usleep(1000000);
+		cout << "*\n";
+	}
+	while(cur_time < expiry_time);
 
 
-	return -1;
+	return 0;
 };
 

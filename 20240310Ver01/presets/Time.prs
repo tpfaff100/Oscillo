@@ -2,5 +2,6 @@
 	file="anims/movanim.vt",
 	delay="1s",
 	duration="19s",
+	preset_loop_yield="100000"
 }
 	

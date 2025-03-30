@@ -96,10 +96,8 @@ int Preset::unitsToms(string data, string tag) {
         string units = first_units_in_str(appsets[tag]);
         int time_in_ms = std::stoi(num);	// currently time in whatever units specified.
 	
-	if (units == "ms")			// now convert to milleseconds and return.
+	if (units == "s") 		// now convert to milleseconds and return.
 		time_in_ms *= 1000;
-	if (units == "s")
-		time_in_ms *= 1000000;
 	return time_in_ms;
 }
 
@@ -116,15 +114,14 @@ int Preset::run() {
 
 	std::cout << timeSinceEpochMillisec() << std::endl;
 
-	uint64_t expiry_time = timeSinceEpochMillisec() + duration, cur_time = -1;;
-cout << cur_time << "   " << expiry_time << "\n";
+	long long expiry_time = timeSinceEpochMillisec() + duration,cur_time = -1;;
 
 	do {
 		cur_time = timeSinceEpochMillisec();
 		usleep(1000000);
-		cout << "*\n";
+		cout << cur_time << "   " << expiry_time << "\n";;
 	}
-	while(cur_time < expiry_time);
+	while(expiry_time - cur_time > 0);
 
 
 	return 0;

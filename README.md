@@ -1,12 +1,11 @@
 # Oscillo
 Simulator of an analog computer / synthesizer / laser imaging system using trig waveforms and combinations thereof
 
-
-I wrote most of this in one night it currently supports one emulated quadrature oscillator.
+I have spent a few weekends on this project it currently supports a group of quadrature oscillators, rendering output
+into a virtual framebuffer that (for ease of implementation) consists of text in the unix command line.  I'm in the
+process of modifying it to allow preset files to create a timed sequence of events to render.
 
 There are two functions in main() one of them is procedural and the other is object-based.
-
-Will be adding support for banks of oscillators next.
 
 The idea is to have two banks of x-y oscillators one that lets you switch out basic shapes, mixing those together and
 another bank of oscillators for high-frequency modulation (used for making shapes modulate or "warble" using

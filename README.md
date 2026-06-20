@@ -32,6 +32,7 @@ Why did I do this?
 Sample build+output when run:
 (two quadrature oscillators added together, slightly out of phase with each other)
 ![Oscillo screen shot](https://github.com/tpfaff100/Oscillo/blob/main/triganime.gif?raw=true)
+![Oscillo screen shot](https://github.com/tpfaff100/Oscillo/blob/main/triganime2.gif?raw=true)
 
 The original Laser Imaging System Head/Computer I'm emulating looks like this:
 

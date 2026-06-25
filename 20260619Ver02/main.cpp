@@ -507,6 +507,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    std::cout << "You didn't specify any parameters.  Try running\n./oscillo -p presets/Time.prs presets/Anim2.prs\n./oscillo -t [0-9]\n";
     return 0;
 
 

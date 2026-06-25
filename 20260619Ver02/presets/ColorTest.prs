@@ -1,0 +1,12 @@
+{
+	initial_delay="1s",
+	duration="19s",
+	loop_yield_time="40ms",
+	osc1_inc_rate=".01",
+	osc2_inc_rate=".02",
+	osc3_inc_rate=".0201",
+	osc4_inc_rate=".0202",
+	osc1_setscale="50",
+	osc1_swap_axes="true"
+}
+	

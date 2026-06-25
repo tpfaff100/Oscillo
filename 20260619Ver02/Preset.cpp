@@ -32,12 +32,28 @@
 #define TAG_DURATION		"duration"
 #define TAG_FILE		"file"
 #define TAG_LOOP_YIELD_DELAY	"loop_yield_time"
+
 #define TAG_OSC1_INC_RATE	"osc1_inc_rate"
 #define TAG_OSC2_INC_RATE	"osc2_inc_rate"
 #define TAG_OSC3_INC_RATE	"osc3_inc_rate"
 #define TAG_OSC4_INC_RATE	"osc4_inc_rate"
 #define TAG_OSC5_INC_RATE	"osc5_inc_rate"
 #define TAG_OSC6_INC_RATE	"osc6_inc_rate"
+
+
+#define TAG_OSC1_SETSCALE	"osc1_setscale"
+#define TAG_OSC2_SETSCALE	"osc2_setscale"
+#define TAG_OSC3_SETSCALE	"osc3_setscale"
+#define TAG_OSC4_SETSCALE	"osc4_setscale"
+#define TAG_OSC5_SETSCALE	"osc5_setscale"
+#define TAG_OSC6_SETSCALE	"osc6_setscale"
+
+#define TAG_OSC1_SWAP_AXES	"osc1_swap_axes"
+#define TAG_OSC2_SWAP_AXES	"osc2_swap_axes"
+#define TAG_OSC3_SWAP_AXES	"osc3_swap_axes"
+#define TAG_OSC4_SWAP_AXES	"osc4_swap_axes"
+#define TAG_OSC5_SWAP_AXES	"osc5_swap_axes"
+#define TAG_OSC6_SWAP_AXES	"osc6_swap_axes"
 
 
 using namespace std;
@@ -163,6 +179,21 @@ Preset::Preset(std::string filename) {
                 exit(1);
         }
 
+	osc1_scale = getScaleConst( TAG_OSC1_SETSCALE );
+	osc2_scale = getScaleConst( TAG_OSC2_SETSCALE );
+	osc3_scale = getScaleConst( TAG_OSC3_SETSCALE );
+	osc4_scale = getScaleConst( TAG_OSC4_SETSCALE );
+	osc5_scale = getScaleConst( TAG_OSC5_SETSCALE );
+	osc6_scale = getScaleConst( TAG_OSC6_SETSCALE );
+
+	osc1_swap_axes = getSwapStatus( TAG_OSC1_SWAP_AXES );
+	osc2_swap_axes = getSwapStatus( TAG_OSC2_SWAP_AXES );
+	osc3_swap_axes = getSwapStatus( TAG_OSC3_SWAP_AXES );
+	osc4_swap_axes = getSwapStatus( TAG_OSC4_SWAP_AXES );
+	osc5_swap_axes = getSwapStatus( TAG_OSC5_SWAP_AXES );
+	osc6_swap_axes = getSwapStatus( TAG_OSC6_SWAP_AXES );
+
+
         Oscill a(osc1_inc_rate);
         Oscill b(osc2_inc_rate);
         Oscill c(osc3_inc_rate);
@@ -170,18 +201,37 @@ Preset::Preset(std::string filename) {
         Oscill e(osc5_inc_rate);
         Oscill f(osc6_inc_rate);
 
-        if (osc1_inc_rate > 0)
+	//if the oscillator was configured, save it for later / add it to the collection class.
+        if (osc1_inc_rate > 0) {
+		a.setScale(osc1_scale);
+		if (osc1_swap_axes) a.swap();
                 osc_vec.push_back(a);
-        if (osc2_inc_rate > 0)
+        }
+	if (osc2_inc_rate > 0) {
+		b.setScale(osc2_scale);
+		if (osc2_swap_axes) b.swap();
                 osc_vec.push_back(b);
-        if (osc3_inc_rate > 0)
+        }
+	if (osc3_inc_rate > 0) {
+		c.setScale(osc3_scale);
+		if (osc3_swap_axes) c.swap();
                 osc_vec.push_back(c);
-        if (osc4_inc_rate > 0)
+        }
+	if (osc4_inc_rate > 0) {
+		d.setScale(osc4_scale);
+		if (osc4_swap_axes) d.swap();
                 osc_vec.push_back(d);
-        if (osc5_inc_rate > 0)
+        }
+	if (osc5_inc_rate > 0) {
+		e.setScale(osc5_scale);
+		if (osc5_swap_axes) e.swap();
                 osc_vec.push_back(e);
-        if (osc6_inc_rate > 0)
+        }
+	if (osc6_inc_rate > 0) {
+		f.setScale(osc6_scale);
+		if (osc6_swap_axes) f.swap();
                 osc_vec.push_back(f);
+	}
 
         bank = new Bank(osc_vec);
 
@@ -221,6 +271,18 @@ Preset::~Preset() {
 }
 
 
+bool Preset::getSwapStatus(std::string tagStr) {
+	string str = appsets[tagStr];
+
+	if (str.length() > 0) {				// if the tag exists.
+		if (str == "true") {
+			return true;
+		}
+	}
+	return false;
+}
+
+
 // check the incoming string
 float Preset::getIncrementRate(std::string tagStr) {
 	string str = appsets[tagStr];
@@ -231,6 +293,19 @@ float Preset::getIncrementRate(std::string tagStr) {
 	}
 	return incRate;
 }
+
+
+int Preset::getScaleConst(std::string tagStr) {
+	string str = appsets[tagStr];
+	int scale=SCALE;				// default set in Oscill.h
+
+	if (str.length() > 0) {				// if the tag exists.
+		scale = std::stof(appsets[tagStr]);	// get the attribute/element.
+	}
+	return scale;
+}
+
+
 
 // we get a tag/string with units in it.  We look at the units
 // and convert to microseconds because that is what usleep() takes.

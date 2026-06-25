@@ -485,7 +485,8 @@ int main(int argc, char* argv[]) {
 	}
 
 	// specify file or files to process [maybe look in presets directory]
-	// example:  ./oscillo -p presets/Anim.prs presets/Animflower.prs presets/Time.prs presets/Anim2.prs
+	// examples: ./oscillo -p presets/Anim.prs presets/Animflower.prs presets/Time.prs presets/Anim2.prs
+	//           ./oscillo -p presets/Time.prs presets/ColorTest.prs
 	//           ./oscillo -p presets/Anim.prs presets/Time.prs
         else if (args[i] == "-p") {		//check if arg exists after flag
 	
@@ -507,7 +508,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    std::cout << "You didn't specify any parameters.  Try running\n./oscillo -p presets/Time.prs presets/Anim2.prs\n./oscillo -t [0-9]\n";
+    std::cout << "You didn't specify any parameters.  Try running\n./oscillo -p presets/Time.prs presets/Anim2.prs\n./oscillo -t [0-9]\n./oscillo -p presets/Time.prs presets/ColorTest.prs\n\n";
     return 0;
 
 

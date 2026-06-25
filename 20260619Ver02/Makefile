@@ -2,7 +2,7 @@ CPPFLAGS=-g -std=c++20 -Wc++11-extensions
 LDFLAGS=-g 
 LDLIBS=
 
-SRCS=Trig.cc Sin.cc Cos.cc Sprite.cc Square.cc Triangle.cc Oscill.cc OscillVector.cc Bank.cc TextBitmap.cc Preset.cc main.cc
+SRCS=Trig.cc Sin.cc Cos.cc Sprite.cc Square.cc Triangle.cc Oscill.cc OscillVector.cc Bank.cc TextBitmap.cc Preset.cc Regress.cc main.cc
 OBJS=$(subst .cc,.o,$(SRCS))
 
 Oscillo: $(OBJS)
@@ -40,6 +40,10 @@ Preset.o: Preset.cpp Preset.h
 
 TextBitmap.o: TextBitmap.cpp TextBitmap.h
 	g++ $(CPPFLAGS) -c TextBitmap.cpp
+
+Regress.o: Regress.cpp Regress.h
+	g++ $(CPPFLAGS) -c Regress.cpp
+
 
 main.o: main.cpp Bank.h
 	g++ $(CPPFLAGS) -c main.cpp

@@ -3,6 +3,8 @@
 
 #include <map>
 #include <string>
+#include <vector>
+
 #include "Bank.h"
 
 class Preset
@@ -10,17 +12,19 @@ class Preset
 	std::map<std::string, std::string> appsets;
 
 	OscillVector osc_vec;	// own the oscillators for the lifetime of the preset
-	Bank *bank;	// collection of oscillators filled out and controlled by Preset.
+	Bank *bank = nullptr;	// collection of oscillators filled out and controlled by Preset.
 
 	float getIncrementRate(std::string);
 	int unitsToms(std::string data, std::string tag);
 
-	float osc1_inc_rate, osc2_inc_rate, osc3_inc_rate, osc4_inc_rate, osc5_inc_rate, osc6_inc_rate;
-	int osc_count;
-	uint64_t duration;
-	uint64_t presetLoopYield;
+	float osc1_inc_rate = -1.0f, osc2_inc_rate = -1.0f, osc3_inc_rate = -1.0f,
+	      osc4_inc_rate = -1.0f, osc5_inc_rate = -1.0f, osc6_inc_rate = -1.0f;
+	int osc_count = 0;
+	uint64_t duration = 0;
+	uint64_t presetLoopYield = 0;
 
 public:
+	Preset(const std::vector<std::string>& filenames); 
 	Preset(std::string file);
 	~Preset();
 

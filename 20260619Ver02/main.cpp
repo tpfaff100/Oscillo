@@ -28,6 +28,7 @@
  */
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include <unistd.h>
@@ -44,6 +45,8 @@
 #define ASPECT_X	4
 #define ASPECT_Y	3	
 #define DELAY		70000
+
+
 
 
 /* This demonstrates two presets with two completely different waveform templates, loaded from disk.
@@ -75,6 +78,8 @@ void Test_Presets() {
 		std::system("clear");   // clear the screen.
 
 	}
+	delete pr3;
+	delete pr2;
 	delete pr1;
 }
 
@@ -85,17 +90,17 @@ void Test_Preset() {
 }
 
 void Test_Sprite() {
-	std::string filename = "anims/globe.vt";	//23
-//	std::string filename = "anims/prey.vt";		//20
-//	std::string filename = "anims/flatmap.vt";	//21
-//	std::string filename = "anims/sship.vt";	//16
-//	std::string filename = "anims/movglobe.vt";	//16
+	std::string sFilename = "anims/globe.vt";	//23
+//	std::string sFilename = "anims/prey.vt";		//20
+//	std::string sFilename = "anims/flatmap.vt";	//21
+//	std::string sFilename = "anims/sship.vt";	//16
+//	std::string sFilename = "anims/movglobe.vt";	//16
 
         OscillVector osc_vec;
         osc_vec.push_back( Oscill(0.01f) );
 	Bank *bank1 = new Bank(osc_vec);
 
-	Sprite *sprite = new Sprite(filename, 23);
+	Sprite *sprite = new Sprite(sFilename, 23);
 /*
  * If you want to avoid using the Bank object with oscillators you can do this instead: *
 	for (int count = 0; count < 1024; count++) {
@@ -399,14 +404,110 @@ void Test_Waveform_Anim() {
 }
 
 
-int main(void) {
-//	Test_Waveform_Anim();
-//      Test_Oscillator();
-//      Test_Oscillators();
-//	Test_Bank();
-//	Test_Invert_Axes();
-//	Test_Color();
-//	Test_Sprite();
-//	Test_Preset();
-	Test_Presets();
+enum { None,
+	Test_1_Waveform_Anim,
+	Test_2_Oscillator_One,
+	Test_3_Oscillators_Multi,
+	Test_4_Bank_of_Oscillators,
+	Test_5_Invert_Axes,
+	Test_6_Colors,
+	Test_7_Sprite,
+	Test_8_Preset,
+	Test_9_Presets_Multi,
+};
+
+
+void regression_tests(int n) {
+
+	switch (n) {
+		case Test_1_Waveform_Anim:
+			Test_Waveform_Anim();
+			break;
+		case Test_2_Oscillator_One:
+			Test_Oscillator();
+			break;
+		case Test_3_Oscillators_Multi:
+			Test_Oscillators();
+			break;
+		case Test_4_Bank_of_Oscillators:
+			Test_Bank();
+			break;
+		case Test_5_Invert_Axes:
+			Test_Invert_Axes();
+			break;
+		case Test_6_Colors:
+			Test_Color();
+			break;
+		case Test_7_Sprite:
+			Test_Sprite();
+			break;
+		case Test_8_Preset:
+			Test_Preset();
+			break;
+		case Test_9_Presets_Multi:
+			Test_Presets();
+			break;
+		case None:
+			std::cout << "There is no 'None' test!\n\n";
+			exit(0);
+		default:
+			break;
+	}
+}
+
+
+// Given a list of filenames, send the list to a new instance of the Preset object and let it draw them as animations.
+// One or more files may be specified.
+void process_files(const std::vector<std::string>& filenames) {
+	Preset pr(filenames);
+}
+
+
+int main(int argc, char* argv[]) {
+    std::vector<std::string> args(argv, argv + argc);
+    bool forceMode = false;
+
+    for (size_t i = 1; i < args.size(); ++i) {
+
+	// regression tests
+	if (args[i] == "-t") {
+		std::string sTestNo = args[++i];
+		try {
+			int n = std::stoi(sTestNo);
+			regression_tests(n);
+		}
+		catch (const std::invalid_argument& e) {
+			std::cout << "Try '-t' with a number from 1-9\n\n";
+		}
+		catch (const std::out_of_range& e) {
+			std::cerr << "Out of range: The number is too large for the type.\n";
+		}
+	}
+
+	// specify file or files to process [maybe look in presets directory]
+	// example:  ./oscillo -p presets/Anim.prs presets/Animflower.prs presets/Time.prs presets/Anim2.prs
+	//           ./oscillo -p presets/Anim.prs presets/Time.prs
+        else if (args[i] == "-p") {		//check if arg exists after flag
+	
+		++i;
+		std::vector<std::string> filenames;
+		for (int j = i; j < argc; ++j)
+			filenames.push_back(std::string(argv[j]));
+
+		if (filenames.empty()) {
+			std::cout << "Usage: " << argv[0] << " <file1> <file2> ... <fileN>\n";
+			return 1;
+		}
+		process_files(filenames);
+        }
+        // Handle unexpected/unknown flags
+        else {
+            std::cerr << "Unknown argument: " << args[i] << "\n";
+            return 1;
+        }
+    }
+
+    return 0;
+
+
 }

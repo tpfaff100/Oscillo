@@ -1,4 +1,4 @@
-CPPFLAGS=-g -std=c++17 -Wc++11-extensions 
+CPPFLAGS=-g -std=c++20 -Wc++11-extensions 
 LDFLAGS=-g 
 LDLIBS=
 

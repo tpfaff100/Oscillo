@@ -88,6 +88,39 @@ std::string first_units_in_str(std::string const & str)
       return std::string();
 }
 
+
+Preset::Preset(const std::vector<std::string>& filenames) {
+	std::cout << "Processing " << filenames.size() << " files:\n";
+
+	std::vector<Preset> vPresets;
+	vPresets.reserve(filenames.size());
+
+	for (const std::string& file : filenames) {
+		std::cout << " - " << file << "\n";
+		vPresets.emplace_back(file);
+	}
+
+	if (vPresets.empty()) {
+		return;
+	}
+
+	while( 1) {
+
+		int preset_count = 0;	
+		for (Preset& preset : vPresets) {
+			if (preset_count++ == 0) {
+				preset.iterate(NULL);
+				preset.clear();
+				preset.sleep();
+				std::system("clear");
+			}
+			else
+				preset.iterate(&vPresets[0]);
+		}
+	}
+
+}
+
 Preset::Preset(std::string filename) {
 
 	std::string line;
@@ -114,11 +147,6 @@ Preset::Preset(std::string filename) {
 	}
 	rfile.close();
 
-        if ( -1 == osc1_inc_rate ) {
-                cout << "At least one oscillator must be defined in the preset file\nExiting...\n";
-                exit(1);
-        }
-
         // Load whatever is spec'd in the presets file.
         // (no one will ever need more than six quadrature oscillators, right?  )
         osc1_inc_rate = getIncrementRate( TAG_OSC1_INC_RATE);
@@ -129,6 +157,11 @@ Preset::Preset(std::string filename) {
         osc6_inc_rate = getIncrementRate( TAG_OSC6_INC_RATE);
         osc_count = (osc1_inc_rate > 0) + (osc2_inc_rate > 0) + (osc3_inc_rate > 0) +
                         (osc4_inc_rate > 0) + (osc5_inc_rate > 0) + (osc6_inc_rate > 0);
+
+        if (osc_count == 0) {
+                cout << "At least one oscillator must be defined in the preset file\nExiting...\n";
+                exit(1);
+        }
 
         Oscill a(osc1_inc_rate);
         Oscill b(osc2_inc_rate);

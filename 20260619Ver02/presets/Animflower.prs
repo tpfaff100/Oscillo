@@ -4,6 +4,6 @@
 	loop_yield_time="40ms",
 	osc1_inc_rate=".00101"
 	osc2_inc_rate=".001"
-	osc3_inc_rate=".02"
+	osc3_inc_rate=".0015"
 }
 	

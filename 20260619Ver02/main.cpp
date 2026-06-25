@@ -66,7 +66,9 @@
 void Test_Presets() {
 	Preset *pr1 = new Preset("presets/Time.prs");
 	Preset *pr2 = new Preset("presets/Anim.prs");
+	Preset *pr3 = new Preset("presets/Animflower.prs");
 	while( !pr2->iterate(pr1) ) {
+		pr3->iterate(pr1);
 		pr1->iterate(NULL);
 		pr1->clear();
 		pr1->sleep();

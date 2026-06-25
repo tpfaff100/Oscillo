@@ -3,7 +3,7 @@
 	duration="19s",
 	loop_yield_time="40ms",
 	osc1_inc_rate=".01"
-	osc2_inc_rate=".02"
-	osc3_inc_rate=".04"
+	osc2_inc_rate=".06"
+	osc3_inc_rate=".08"
 }
 	

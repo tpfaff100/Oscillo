@@ -48,13 +48,19 @@
 #define TAG_OSC5_SETSCALE	"osc5_setscale"
 #define TAG_OSC6_SETSCALE	"osc6_setscale"
 
-#define TAG_OSC1_SWAP_AXES	"osc1_swap_axes"
-#define TAG_OSC2_SWAP_AXES	"osc2_swap_axes"
-#define TAG_OSC3_SWAP_AXES	"osc3_swap_axes"
-#define TAG_OSC4_SWAP_AXES	"osc4_swap_axes"
-#define TAG_OSC5_SWAP_AXES	"osc5_swap_axes"
-#define TAG_OSC6_SWAP_AXES	"osc6_swap_axes"
+#define TAG_bOsc1SwapAxes	"bOsc1SwapAxes"
+#define TAG_bOsc2SwapAxes	"bOsc2SwapAxes"
+#define TAG_bOsc3SwapAxes	"bOsc3SwapAxes"
+#define TAG_bOsc4SwapAxes	"bOsc4SwapAxes"
+#define TAG_bOsc5SwapAxes	"bOsc5SwapAxes"
+#define TAG_bOsc6SwapAxes	"bOsc6SwapAxes"
 
+#define TAG_AMPLITUDE_MOD	"amplitude_modulation"
+
+#define TAG_COLOR_MOD_ENABLE	"color_mod_enable"
+#define TAG_COLOR_1		"color_mod1"
+#define TAG_COLOR_2		"color_mod2"
+#define TAG_COLOR_MOD_INC_RATE	"color_mod_inc_rate"
 
 using namespace std;
 using namespace std::chrono;
@@ -165,84 +171,94 @@ Preset::Preset(std::string filename) {
 
         // Load whatever is spec'd in the presets file.
         // (no one will ever need more than six quadrature oscillators, right?  )
-        osc1_inc_rate = getIncrementRate( TAG_OSC1_INC_RATE);
-        osc2_inc_rate = getIncrementRate( TAG_OSC2_INC_RATE);
-        osc3_inc_rate = getIncrementRate( TAG_OSC3_INC_RATE);
-        osc4_inc_rate = getIncrementRate( TAG_OSC4_INC_RATE);
-        osc5_inc_rate = getIncrementRate( TAG_OSC5_INC_RATE);
-        osc6_inc_rate = getIncrementRate( TAG_OSC6_INC_RATE);
-        osc_count = (osc1_inc_rate > 0) + (osc2_inc_rate > 0) + (osc3_inc_rate > 0) +
-                        (osc4_inc_rate > 0) + (osc5_inc_rate > 0) + (osc6_inc_rate > 0);
+        fOsc1IncRate = jsonStrToFloat( TAG_OSC1_INC_RATE);
+        fOsc2IncRate = jsonStrToFloat( TAG_OSC2_INC_RATE);
+        fOsc3IncRate = jsonStrToFloat( TAG_OSC3_INC_RATE);
+        fOsc4IncRate = jsonStrToFloat( TAG_OSC4_INC_RATE);
+        fOsc5IncRate = jsonStrToFloat( TAG_OSC5_INC_RATE);
+        fOsc6IncRate = jsonStrToFloat( TAG_OSC6_INC_RATE);
+        osc_count = (fOsc1IncRate > 0) + (fOsc2IncRate > 0) + (fOsc3IncRate > 0) +
+                        (fOsc4IncRate > 0) + (fOsc5IncRate > 0) + (fOsc6IncRate > 0);
 
         if (osc_count == 0) {
                 cout << "At least one oscillator must be defined in the preset file\nExiting...\n";
                 exit(1);
         }
 
-	osc1_scale = getScaleConst( TAG_OSC1_SETSCALE );
-	osc2_scale = getScaleConst( TAG_OSC2_SETSCALE );
-	osc3_scale = getScaleConst( TAG_OSC3_SETSCALE );
-	osc4_scale = getScaleConst( TAG_OSC4_SETSCALE );
-	osc5_scale = getScaleConst( TAG_OSC5_SETSCALE );
-	osc6_scale = getScaleConst( TAG_OSC6_SETSCALE );
+	osc1Scale = jsonStrToInt( TAG_OSC1_SETSCALE );
+	osc2Scale = jsonStrToInt( TAG_OSC2_SETSCALE );
+	osc3Scale = jsonStrToInt( TAG_OSC3_SETSCALE );
+	osc4Scale = jsonStrToInt( TAG_OSC4_SETSCALE );
+	osc5Scale = jsonStrToInt( TAG_OSC5_SETSCALE );
+	osc6Scale = jsonStrToInt( TAG_OSC6_SETSCALE );
 
-	osc1_swap_axes = getSwapStatus( TAG_OSC1_SWAP_AXES );
-	osc2_swap_axes = getSwapStatus( TAG_OSC2_SWAP_AXES );
-	osc3_swap_axes = getSwapStatus( TAG_OSC3_SWAP_AXES );
-	osc4_swap_axes = getSwapStatus( TAG_OSC4_SWAP_AXES );
-	osc5_swap_axes = getSwapStatus( TAG_OSC5_SWAP_AXES );
-	osc6_swap_axes = getSwapStatus( TAG_OSC6_SWAP_AXES );
+	bOsc1SwapAxes = jsonStrToBool( TAG_bOsc1SwapAxes );
+	bOsc2SwapAxes = jsonStrToBool( TAG_bOsc2SwapAxes );
+	bOsc3SwapAxes = jsonStrToBool( TAG_bOsc3SwapAxes );
+	bOsc4SwapAxes = jsonStrToBool( TAG_bOsc4SwapAxes );
+	bOsc5SwapAxes = jsonStrToBool( TAG_bOsc5SwapAxes );
+	bOsc6SwapAxes = jsonStrToBool( TAG_bOsc6SwapAxes );
 
+	bAmpMod = jsonStrToBool( TAG_AMPLITUDE_MOD );
 
-        Oscill a(osc1_inc_rate);
-        Oscill b(osc2_inc_rate);
-        Oscill c(osc3_inc_rate);
-        Oscill d(osc4_inc_rate);
-        Oscill e(osc5_inc_rate);
-        Oscill f(osc6_inc_rate);
+	fColorModIncRate = jsonStrToFloat( TAG_COLOR_MOD_INC_RATE );
+	colorMod1 = getColorMod( TAG_COLOR_1);
+	colorMod2 = getColorMod( TAG_COLOR_2);
+	bColorEnable = jsonStrToBool ( TAG_COLOR_MOD_ENABLE );
+
+        Oscill a(fOsc1IncRate);
+        Oscill b(fOsc2IncRate);
+        Oscill c(fOsc3IncRate);
+        Oscill d(fOsc4IncRate);
+        Oscill e(fOsc5IncRate);
+        Oscill f(fOsc6IncRate);
 
 	//if the oscillator was configured, save it for later / add it to the collection class.
-        if (osc1_inc_rate > 0) {
-		a.setScale(osc1_scale);
-		if (osc1_swap_axes) a.swap();
+        if (fOsc1IncRate > 0) {
+		a.setScale(osc1Scale);
+		if (bOsc1SwapAxes) a.swap();
                 osc_vec.push_back(a);
         }
-	if (osc2_inc_rate > 0) {
-		b.setScale(osc2_scale);
-		if (osc2_swap_axes) b.swap();
+	if (fOsc2IncRate > 0) {
+		b.setScale(osc2Scale);
+		if (bOsc2SwapAxes) b.swap();
                 osc_vec.push_back(b);
         }
-	if (osc3_inc_rate > 0) {
-		c.setScale(osc3_scale);
-		if (osc3_swap_axes) c.swap();
+	if (fOsc3IncRate > 0) {
+		c.setScale(osc3Scale);
+		if (bOsc3SwapAxes) c.swap();
                 osc_vec.push_back(c);
         }
-	if (osc4_inc_rate > 0) {
-		d.setScale(osc4_scale);
-		if (osc4_swap_axes) d.swap();
+	if (fOsc4IncRate > 0) {
+		d.setScale(osc4Scale);
+		if (bOsc4SwapAxes) d.swap();
                 osc_vec.push_back(d);
         }
-	if (osc5_inc_rate > 0) {
-		e.setScale(osc5_scale);
-		if (osc5_swap_axes) e.swap();
+	if (fOsc5IncRate > 0) {
+		e.setScale(osc5Scale);
+		if (bOsc5SwapAxes) e.swap();
                 osc_vec.push_back(e);
         }
-	if (osc6_inc_rate > 0) {
-		f.setScale(osc6_scale);
-		if (osc6_swap_axes) f.swap();
+	if (fOsc6IncRate > 0) {
+		f.setScale(osc6Scale);
+		if (bOsc6SwapAxes) f.swap();
                 osc_vec.push_back(f);
 	}
 
         bank = new Bank(osc_vec);
+	bank->setAmplitudeModulation(bAmpMod);
+
+	if (bColorEnable == true)
+		bank->setColorModulation(bColorEnable, colorMod1, colorMod2, fColorModIncRate);      /* optional, color modulation is off by default */
 
 #ifndef NDEBUG
         std::cerr << "Preset debug: rates="
-                  << osc1_inc_rate << ","
-                  << osc2_inc_rate << ","
-                  << osc3_inc_rate << ","
-                  << osc4_inc_rate << ","
-                  << osc5_inc_rate << ","
-                  << osc6_inc_rate
+                  << fOsc1IncRate << ","
+                  << fOsc2IncRate << ","
+                  << fOsc3IncRate << ","
+                  << fOsc4IncRate << ","
+                  << fOsc5IncRate << ","
+                  << fOsc6IncRate 
                   << " osc_count=" << osc_count
                   << " vector_size=" << osc_vec.size()
                   << std::endl;
@@ -271,7 +287,31 @@ Preset::~Preset() {
 }
 
 
-bool Preset::getSwapStatus(std::string tagStr) {
+
+
+
+Color Preset::getColorMod(std::string tagStr) {
+        string str = appsets[tagStr];
+
+	if (str == "red")
+		return red;
+	if (str == "green")
+		return green;
+	if (str == "yellow")
+		return yellow;
+	if (str == "purple")
+		return purple;
+	if (str == "cyan")
+		return cyan;
+	if (str == "white")
+		return white;
+	if (str == "black")
+		return black; 
+	return green;
+}
+
+
+bool Preset::jsonStrToBool(std::string tagStr) {
 	string str = appsets[tagStr];
 
 	if (str.length() > 0) {				// if the tag exists.
@@ -284,7 +324,7 @@ bool Preset::getSwapStatus(std::string tagStr) {
 
 
 // check the incoming string
-float Preset::getIncrementRate(std::string tagStr) {
+float Preset::jsonStrToFloat(std::string tagStr) {
 	string str = appsets[tagStr];
 	float incRate = -1.0f;				// -1 ==> no such tag or element
 
@@ -295,7 +335,7 @@ float Preset::getIncrementRate(std::string tagStr) {
 }
 
 
-int Preset::getScaleConst(std::string tagStr) {
+int Preset::jsonStrToInt(std::string tagStr) {
 	string str = appsets[tagStr];
 	int scale=SCALE;				// default set in Oscill.h
 

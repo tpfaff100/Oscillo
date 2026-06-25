@@ -6,6 +6,8 @@
 #include <vector>
 
 #include "Bank.h"
+#include "TextBitmap.h"		// colors
+
 
 class Preset
 {
@@ -14,18 +16,32 @@ class Preset
 	OscillVector osc_vec;	// own the oscillators for the lifetime of the preset
 	Bank *bank = nullptr;	// collection of oscillators filled out and controlled by Preset.
 
-	bool  getSwapStatus(std::string tagStr); 
-	float getIncrementRate(std::string);
-	int   getScaleConst(std::string); 
+	float getAmplitudeMod(std::string);
+
+	Color getColorMod(std::string);
+	bool  jsonStrToBool(std::string); 
+	float jsonStrToFloat(std::string);
+	int   jsonStrToInt(std::string); 
 
 	int unitsToms(std::string data, std::string tag);
 
-	float osc1_inc_rate = -1.0f, osc2_inc_rate = -1.0f, osc3_inc_rate = -1.0f,
-	      osc4_inc_rate = -1.0f, osc5_inc_rate = -1.0f, osc6_inc_rate = -1.0f;
+	float fOsc1IncRate = -1.0f, fOsc2IncRate = -1.0f, fOsc3IncRate = -1.0f,
+	      fOsc4IncRate = -1.0f, fOsc5IncRate = -1.0f, fOsc6IncRate = -1.0f;
 	int osc_count = 0;
 
-	int osc1_scale, osc2_scale, osc3_scale, osc4_scale, osc5_scale, osc6_scale;
-	int osc1_swap_axes, osc2_swap_axes, osc3_swap_axes, osc4_swap_axes, osc5_swap_axes, osc6_swap_axes;
+	int osc1Scale, osc2Scale, osc3Scale, osc4Scale, osc5Scale, osc6Scale;
+	bool bOsc1SwapAxes, bOsc2SwapAxes, bOsc3SwapAxes, bOsc4SwapAxes, bOsc5SwapAxes, bOsc6SwapAxes;
+
+	bool bAmpMod;	// enable amplitude modulation on the oscillator bank.
+
+	/* color modulation information- this lets colors animate sync'd to the trig waveform while shape is animating. */
+        int bColorEnable;
+	float fColorModIncRate;
+
+        Color colorMod1;
+        Color colorMod2;
+
+	/* general class vars for Preset object */
 	uint64_t duration = 0;
 	uint64_t presetLoopYield = 0;
 

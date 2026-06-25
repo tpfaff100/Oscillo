@@ -155,6 +155,7 @@ void Regress::Test_Invert_Axes() {
 
         Bank *bank1 = new Bank(osc_vec);
         bank1->setColorModulation(true, white, red, .0015);       /* optional, color modulation is off by default */
+//	bank1->setAmplitudeModulation(true);
 
 	osc_vec.at(0).setScale(50);
 	osc_vec.at(0).swap();

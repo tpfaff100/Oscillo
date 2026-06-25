@@ -51,16 +51,6 @@
 #include "Regress.h"
 #include "Preset.h"
 
-#include "Trig.h"
-#include "Sin.h"
-#include "Cos.h"
-#include "OscillVector.h"
-
-#include "Oscill.h"		/* Oscillator containing waveform type an her attributes */
-#include "Bank.h"		/* Bank of oscillators we can select and iterate through */
-#include "Sprite.h"
-#include "Types.h"
-
 #define ASPECT_X	4
 #define ASPECT_Y	3	
 #define DELAY		70000
@@ -75,6 +65,7 @@ void process_files(const std::vector<std::string>& filenames) {
 }
 
 
+
 int main(int argc, char* argv[]) {
 	std::vector<std::string> args(argv, argv + argc);
 	bool forceMode = false;
@@ -83,7 +74,7 @@ int main(int argc, char* argv[]) {
 	for (size_t i = 1; i < args.size(); ++i) {
 
 		// regression tests
-		if (args[i] == "-t") {
+		if (args[i] == "-t") {	// specify that we're running regression test.
 			std::string sTestNo = args[++i];
 			try {
 				int n = std::stoi(sTestNo);
@@ -102,7 +93,7 @@ int main(int argc, char* argv[]) {
 		// examples: ./oscillo -p presets/Anim.prs presets/Animflower.prs presets/Time.prs presets/Anim2.prs
 		//           ./oscillo -p presets/Time.prs presets/ColorTest.prs
 		//           ./oscillo -p presets/Anim.prs presets/Time.prs
-		else if (args[i] == "-p") {		//check if arg exists after flag
+		else if (args[i] == "-p") {		// check to see if user spec'd PRESET files
 		
 			++i;
 			std::vector<std::string> filenames;

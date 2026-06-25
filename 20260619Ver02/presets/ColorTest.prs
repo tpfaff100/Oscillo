@@ -7,6 +7,11 @@
 	osc3_inc_rate=".0201",
 	osc4_inc_rate=".0202",
 	osc1_setscale="50",
-	osc1_swap_axes="true"
+	osc1_swap_axes="true",
+	amplitude_modulation="true"
+	color_mod_enable="true",
+	color_mod1="green",
+	color_mod2="cyan",
+	color_mod_inc_rate=".01",
 }
 	

@@ -1,6 +1,6 @@
 {
 	initial_delay="1s",
-	duration="19s",
+	duration="10s",
 	loop_yield_time="40ms",
 	osc1_inc_rate=".01"
 	osc2_inc_rate=".02"

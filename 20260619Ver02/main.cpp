@@ -95,8 +95,8 @@ int main(int argc, char* argv[]) {
 		//           ./oscillo -p presets/Anim.prs presets/Time.prs
 		else if (args[i] == "-p") {		// check to see if user spec'd PRESET files
 		
-			++i;
 			std::vector<std::string> filenames;
+			i++;
 			for (int j = i; j < argc; ++j)
 				filenames.push_back(std::string(argv[j]));
 
@@ -106,9 +106,7 @@ int main(int argc, char* argv[]) {
 			}
 			process_files(filenames);
 			animation_complete = true;
-		}
-		// Handle unexpected/unknown flags
-		else {
+		} else {
 			std::cerr << "Unknown argument: " << args[i] << "\n";
 			std::cout << "Usage: " << argv[0] << " -t [1-9] -f [file.prs]\n";
 			return 1;

@@ -4,6 +4,14 @@
 
 using namespace std;
 
+
+// Use a simple helper function
+/*
+uint8_t& get_bmap(size_t row, size_t col) {
+    return bmap[(row * 16) + col];
+}
+*/
+
 /** This module treats a 2D array like a frame buffer.  The framebuffer is written into by the
  ** 'Bank' object, then rendered here.  This text based 'framebuffer' can currently handle
  ** 2 colors from a palette of 16.  We could do better (at least 4 colors out of 16).
@@ -13,12 +21,15 @@ using namespace std;
  **
  */
 
+
+
 TextBitmap::TextBitmap() {
 	setColor(false, green, blue);		// set colors but disable color modulation by default.
+	clear();
 }
 
 void TextBitmap::clear(void) {
-	memset(bmap, ' ', SCALE*SCALE);		// clear the drawing surface
+	std::fill(bmap_buf.begin(), bmap_buf.end(), ' ');
 }
 
 void TextBitmap::setColor(bool color_mod_enable, Color color, Color altcolor) {
@@ -35,6 +46,8 @@ void TextBitmap::setColor(bool color_mod_enable, Color color, Color altcolor) {
  */
 void TextBitmap::dump(void) {
 	int currColor = color1;
+
+	static auto bmap = reinterpret_cast<uint8_t(*)[SCALE]>(bmap_buf.data());
 
 	if (color_mod_enable == true) {
 		for (int y = 0; y < SCALE; y++) {

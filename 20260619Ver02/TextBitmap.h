@@ -4,6 +4,9 @@
 #include "Oscill.h"
 #include "Types.h"
 
+#pragma once
+#include <array>
+
 #define TEXT_COLOR_LEN		10
 
 #define TEXT_COLOR_BLACK	"\e[0;30m"
@@ -21,7 +24,21 @@ enum Color { black, red, green, yellow, blue, purple, cyan, white };
 
 class TextBitmap {
 public:
-	u1 bmap[SCALE][SCALE];
+	
+	static inline std::array<uint8_t, SCALE*SCALE> bmap_buf;
+
+
+	// treat bmap_buf as a 2D array by returning ref to specific element
+	uint8_t& get_element(size_t row, size_t col) {
+		return bmap_buf[row * SCALE + col];
+	}
+	
+	// const overload for safe read-only.
+	const uint8_t& get_element(size_t row, size_t col) const {
+		return bmap_buf[row * SCALE + col];
+	}
+
+//	u1 bmap[SCALE][SCALE];
 	int color1, color2;
 	bool color_mod_enable;
 

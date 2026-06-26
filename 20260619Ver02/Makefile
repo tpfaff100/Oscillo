@@ -2,7 +2,7 @@ CPPFLAGS=-g -std=c++20 -Wc++11-extensions
 LDFLAGS=-g 
 LDLIBS=
 
-SRCS=Trig.cc Sin.cc Cos.cc Sprite.cc Square.cc Triangle.cc Oscill.cc OscillVector.cc Bank.cc TextBitmap.cc Preset.cc Regress.cc main.cc
+SRCS=Trig.cc Sin.cc Cos.cc Sprite.cc Square.cc Triangle.cc Oscill.cc OscillVector.cc TextBitmap.cc Bank.cc Preset.cc Regress.cc main.cc
 OBJS=$(subst .cc,.o,$(SRCS))
 
 Oscillo: $(OBJS)

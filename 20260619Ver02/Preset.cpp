@@ -163,6 +163,7 @@ Preset::Preset(const std::vector<std::string>& filenames) {
 			}
 			else {
 				preset.iterate(&vPresets[0]);
+				preset.sleep();
 			}
 		}
 	}
@@ -212,8 +213,9 @@ Preset::Preset(std::string filename) {
         osc_count = (fOsc1IncRate > 0) + (fOsc2IncRate > 0) + (fOsc3IncRate > 0) +
                         (fOsc4IncRate > 0) + (fOsc5IncRate > 0) + (fOsc6IncRate > 0);
 
-        if (osc_count == 0) {
-                cout << "At least one oscillator must be defined in the preset file\nExiting...\n";
+//	if (osc_count == 0 && appsets[TAG_FILE].length() == 0 ) {
+	if (osc_count == 0) {
+                cout << "At least one oscillator or animation must be defined in the preset file\nExiting...\n";
                 exit(1);
         }
 
@@ -258,6 +260,7 @@ Preset::Preset(std::string filename) {
         Oscill d(fOsc4IncRate);
         Oscill e(fOsc5IncRate);
         Oscill f(fOsc6IncRate);
+
 
 	//if the oscillator was configured, save it for later / add it to the collection class.
         if (fOsc1IncRate > 0) {
@@ -323,16 +326,21 @@ Preset::Preset(std::string filename) {
 #endif
 
         uint64_t delay =       unitsToms( appsets[TAG_DELAY], TAG_DELAY );
-        usleep(delay);
+        usleep(delay*1000);	// convert millseconds to microseconds for usleep()
 
         duration =             unitsToms( appsets[TAG_DURATION], TAG_DURATION );
         presetLoopYield =      unitsToms( appsets[TAG_LOOP_YIELD_DELAY], TAG_LOOP_YIELD_DELAY );
+//cout << "\n" << presetLoopYield << endl;
+//exit(0);
 
         Sprite *sprite = new Sprite(appsets[TAG_FILE], 23);     // optionally load a sprite.
         bank->setSprite(sprite);       // attach the animation to the oscillator bank.
 
         llExpiryTime = timeSinceEpochMillisec() + duration;
-//	std::cout << timeSinceEpochMillisec() << std::endl;
+	std::cout << "\n\n" << delay << std::endl;
+	std::cout << duration << std::endl;
+	std::cout << llExpiryTime << std::endl;
+	std::cout << timeSinceEpochMillisec() << std::endl;
 }
 
 
@@ -411,13 +419,15 @@ int Preset::jsonStrToInt(std::string tagStr) {
 int Preset::unitsToms(string data, string tag) {
         string num = first_number_in_str(appsets[tag]);
         string units = first_units_in_str(appsets[tag]);
-cout << num + " " + units;
+//cout << num + " " + units;
         int time_in_ms = std::stoi(num);	// currently time in whatever units specified.
 
-	if (units == "ms")
-		time_in_ms *= 1000;
-	if (units == "s") 		// now convert to milleseconds and return.
-		time_in_ms *= 1000;
+	if (units == "s" || units == "sec" || units == "seconds")
+		time_in_ms *= 1000; 		// convert seconds to milleseconds and keep value.
+	if (units == "m" || units == "min" || units == "minutes")
+		time_in_ms *= 60000;		// convert minutes to milleseconds and keep value.
+	if (units == "h" || units == "hour" || units == "hours")
+		time_in_ms *= 3600000;
 	return time_in_ms;
 }
 
@@ -428,7 +438,7 @@ void Preset::clear() {
 }
 
 void Preset::sleep() {
-	usleep(presetLoopYield);// wait awhile.
+	usleep(presetLoopYield*1000);	// sleep for n000 us aka  n ms)
 }	
 
 
@@ -445,8 +455,9 @@ bool Preset::iterate(Preset *p2) {
 		;               // yes the semicolon is necessary.  Do not delete it!
 
 	bank->dump();          // draw the cycle of waveforms and animation frame, where appropriate.
-
-//printf("%ld  %ld\n",  cur_time, llExpiryTime-cur_time);
+#if NDEBUG
+printf("cur_time:%ld  time left:%ld\n",  cur_time, llExpiryTime-cur_time);
+#endif
 	if (llExpiryTime-cur_time < 0)
 		return true;
 	return false;

@@ -38,6 +38,7 @@ Bank::~Bank() {
 }
 
 
+
 // draw a 1980s vt100 animation sprite frame into the text framebuffer.
 void Bank::renderSpriteOffscreen(Sprite *sprite) {
         if (sprite != NULL) {
@@ -45,19 +46,21 @@ void Bank::renderSpriteOffscreen(Sprite *sprite) {
                 int height = sprite->frame_height;
                 int bx = SCALE/2 - sprite->frame_width/2, by = SCALE/2 - sprite->frame_height/2;
 		int resetx = bx;
-                char pixel = ' ';
 
+		char pixel = ' ';	// default is an empty pixel/space in the framebuffer!
 		int count = 0;
                 // xfer the antiquated vt100 frame to our super high-tech text framebuffer!
                 for (int row = 0; row < height; row++) {
                         do {
 				if (by < SCALE && by > 0) {
+					uint8_t& dst_pixel = surface->get_element(bx++, by); 
 					pixel = framestr[count++];
-					surface->bmap[bx++][by] = pixel;
+					dst_pixel = pixel;
 				}
                         } while( pixel != '\n');
-
-			surface->bmap[bx-1][by] = ' ';	// remove the CR from the end of the line.
+			
+			uint8_t& dst_pixel = surface->get_element(bx-1, by);
+			dst_pixel = ' ';
                         bx = resetx;
                         by++;
                 }
@@ -70,6 +73,8 @@ void Bank::renderSpriteOffscreen(Sprite *sprite) {
  **
  ** @Bbank2 - if present, we write into Bank's framebuffer.  This lets us have one drawing surface for two separate Presets
  **                   kinda not the neatest code but it keeps things fairly fast
+ **
+ ** 2026.0626 - Room for impreovement:  accessing the framebuffer is inefficient as it takes a function call to draw every pixel!
  */
 bool Bank::range(Bank *b2) {
 	bool inrange = false;
@@ -111,14 +116,16 @@ bool Bank::range(Bank *b2) {
 	if (tbm != NULL)				// allow another surface to pose as ours for combined blits.
 		surface = tbm;
 
+	uint8_t& dst_pixel = surface->get_element(x, y);
+
 	if (disable_color_mod == false) {
 		if (color_mod_waveform->next() > 0.0)
-			surface->bmap[x][y] = '.';    // write a 'pixel' to the offscreen bitmap.
+			dst_pixel = '.';    // write a 'pixel' to the offscreen bitmap.
 		else
-			surface->bmap[x][y] = '*';    // write a 'pixel' to the offscreen bitmap.
+			dst_pixel = '*';
 
 	} else {				// no color modulation so let's keep it simple!
-		surface->bmap[x][y] = '*';	// colorless. Runs faster/cleaner w/ complex shapes.
+		dst_pixel = '*';	// colorless. Runs faster/cleaner w/ complex shapes.
 	}
 
 	surface = tsurface;	// restore this class's surface instance.

@@ -18,6 +18,7 @@ class Preset
 
 	float getAmplitudeMod(std::string);
 
+	// generic functiosn to convert JSON string from file to C datatype.  
 	Color getColorMod(std::string);
 	bool  jsonStrToBool(std::string); 
 	float jsonStrToFloat(std::string);
@@ -32,16 +33,21 @@ class Preset
 	int osc1Scale, osc2Scale, osc3Scale, osc4Scale, osc5Scale, osc6Scale;
 	bool bOsc1SwapAxes, bOsc2SwapAxes, bOsc3SwapAxes, bOsc4SwapAxes, bOsc5SwapAxes, bOsc6SwapAxes;
 
-	bool bAmpMod;	// enable amplitude modulation on the oscillator bank.
+	// enable amplitude modulation on the oscillator bank. 
+	bool bAmpMod;	
 
-	/* color modulation information- this lets colors animate sync'd to the trig waveform while shape is animating. */
+	// color modulation information- this lets colors animate sync'd to the trig waveform while shape is animating. 
         int bColorEnable;
 	float fColorModIncRate;
 
         Color colorMod1;
         Color colorMod2;
 
-	/* general class vars for Preset object */
+	// each Bank has 6 'x axis oscillators' and 6 'y axis oscillators.  we can control starting/relative phase shift here.
+	float fOsc1PhaseX = 0.0f, fOsc2PhaseX = 0.0f, fOsc3PhaseX = 0.0f, fOsc4PhaseX = 0.0f, fOsc5PhaseX = 0.0f, fOsc6PhaseX = 0.0f;
+	float fOsc1PhaseY = 0.0f, fOsc2PhaseY = 0.0f, fOsc3PhaseY = 0.0f, fOsc4PhaseY = 0.0f, fOsc5PhaseY = 0.0f, fOsc6PhaseY = 0.0f;
+
+	// general class vars for Preset object 
 	uint64_t duration = 0;
 	uint64_t presetLoopYield = 0;
 
@@ -50,14 +56,14 @@ public:
 	Preset(std::string file);
 	~Preset();
 
-	/** perform one waveform iteration only */
+	// perform one waveform iteration only 
 	void clear();
 
-	/** we have the option of merging presets and bitmaps to draw one single bitmap.  Normally sends nullptr. */
+	// we have the option of merging presets and bitmaps to draw one single bitmap.  Normally sends nullptr. 
 	bool iterate(Preset *p2);	
 	void sleep();
 
-	/** perform an entire cycle through the waveform per loaded preset file */
+	// perform an entire cycle through the waveform per loaded preset file 
 	int run(void);
 };
 

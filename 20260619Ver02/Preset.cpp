@@ -80,6 +80,8 @@
 using namespace std;
 using namespace std::chrono;
 
+
+
 uint64_t timeSinceEpochMillisec() {
 	using namespace std::chrono;
 	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
@@ -126,6 +128,8 @@ std::string first_units_in_str(std::string const & str)
 }
 
 
+// NOTE:  RENDERS ONE OR MORE PRESET FILES AT A TIME from a list/vector of presetfiles.
+// Render one or more prs/PRESET files and produce waveform output inr eal time based on instructions contained within 
 Preset::Preset(const std::vector<std::string>& filenames) {
 	std::cout << "Processing " << filenames.size() << " files:\n";
 
@@ -138,26 +142,37 @@ Preset::Preset(const std::vector<std::string>& filenames) {
 	}
 
 	if (vPresets.empty()) {
+		cout << "Error:  No preset files were specified.\n";
 		return;
 	}
 
-	while( 1) {
-
+	bool isComplete = false;
+	do
+	{
 		int preset_count = 0;	
 		for (Preset& preset : vPresets) {
 			if (preset_count++ == 0) {
+				isComplete = preset.iterate(NULL);
 				preset.iterate(NULL);
 				preset.clear();
 				preset.sleep();
 				std::system("clear");
+
+				if (isComplete == true)
+					return;
 			}
-			else
+			else {
 				preset.iterate(&vPresets[0]);
+			}
 		}
 	}
+	while(isComplete==false); 	
 
 }
 
+
+// NOTE:  RENDERS ONLY ONE PRESET FILE AT A TIME at the file/pathname given.
+// load one prs/PRESET file and produce waveform output in real time based on the instructions contained within
 Preset::Preset(std::string filename) {
 
 	std::string line;
@@ -165,10 +180,10 @@ Preset::Preset(std::string filename) {
 
 	rfile.open(filename);
 
-
+	// load 'prs' (preset) file ==> produce waveforms as per instructions in the preset file.
 	if (rfile.is_open()) {
 		while (std::getline(rfile, line)) {
-			if (line.front() != '#') {
+			if (line.front() != '#') {	// a '#' at position 0 in presets file indicates line should be ignored
 				int pos = line.find("=");
 				if (pos > -1) {
 					line = trim(line);
@@ -307,7 +322,7 @@ Preset::Preset(std::string filename) {
                   << std::endl;
 #endif
 
-        uint64_t delay =                unitsToms( appsets[TAG_DELAY], TAG_DELAY );
+        uint64_t delay =       unitsToms( appsets[TAG_DELAY], TAG_DELAY );
         usleep(delay);
 
         duration =             unitsToms( appsets[TAG_DURATION], TAG_DURATION );
@@ -316,7 +331,7 @@ Preset::Preset(std::string filename) {
         Sprite *sprite = new Sprite(appsets[TAG_FILE], 23);     // optionally load a sprite.
         bank->setSprite(sprite);       // attach the animation to the oscillator bank.
 
-
+        llExpiryTime = timeSinceEpochMillisec() + duration;
 //	std::cout << timeSinceEpochMillisec() << std::endl;
 }
 
@@ -396,12 +411,13 @@ int Preset::jsonStrToInt(std::string tagStr) {
 int Preset::unitsToms(string data, string tag) {
         string num = first_number_in_str(appsets[tag]);
         string units = first_units_in_str(appsets[tag]);
+cout << num + " " + units;
         int time_in_ms = std::stoi(num);	// currently time in whatever units specified.
 
 	if (units == "ms")
 		time_in_ms *= 1000;
 	if (units == "s") 		// now convert to milleseconds and return.
-		time_in_ms *= 1000000;
+		time_in_ms *= 1000;
 	return time_in_ms;
 }
 
@@ -421,9 +437,7 @@ void Preset::sleep() {
  */
 bool Preset::iterate(Preset *p2) {
 	Bank *b2 = NULL;	// by default, B2 is null, which means we use our own framebuffer!
-        long long expiry_time = timeSinceEpochMillisec() + duration/1000, cur_time = 0;
-
-	cur_time = timeSinceEpochMillisec();
+	long long cur_time = timeSinceEpochMillisec();
 
 	if (p2 != NULL)
 		b2 = p2->bank;
@@ -432,24 +446,22 @@ bool Preset::iterate(Preset *p2) {
 
 	bank->dump();          // draw the cycle of waveforms and animation frame, where appropriate.
 
-	if (expiry_time - cur_time > 0)
-		return false;
-
-	return true;
+//printf("%ld  %ld\n",  cur_time, llExpiryTime-cur_time);
+	if (llExpiryTime-cur_time < 0)
+		return true;
+	return false;
 }
 
 
 // this synchronous method runs the preset as quickly as possible in a loop; does not exit until done.
 int Preset::run() {
-	long long expiry_time = timeSinceEpochMillisec() + duration/1000, cur_time = 0;
+	long long llExpiryTime = timeSinceEpochMillisec() + duration/1000, cur_time = 0;
 
 	// A N I M A T E   O U R   T R I G   F U N C T I O N S
 	////////////////////////////////////////////////////////////
 	// run a trigonometric animation cycle for awhile.
 	do {
 		cur_time = timeSinceEpochMillisec();
-//		cout << cur_time << "   " << expiry_time << "\n";
-
 
 		// this loop executes quickly in some sort of fraction of a second, depending on predetermined cycle+resolution
 		while(bank->range(NULL)) 	// compute all values for one cycle, whatever that was predetermined to be.
@@ -462,6 +474,6 @@ int Preset::run() {
 		std::system("clear");	// clear the screen.
 
 	}
-	while(expiry_time - cur_time > 0);
+	while(llExpiryTime - cur_time > 0);
 	return 0;
 }

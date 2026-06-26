@@ -68,8 +68,7 @@ void process_files(const std::vector<std::string>& filenames) {
 
 int main(int argc, char* argv[]) {
 	std::vector<std::string> args(argv, argv + argc);
-	bool forceMode = false;
-
+	bool animation_complete = false;
 
 	for (size_t i = 1; i < args.size(); ++i) {
 
@@ -80,6 +79,7 @@ int main(int argc, char* argv[]) {
 				int n = std::stoi(sTestNo);
 				Regress r;
 				r.Test_Regression_Suite(n);
+				animation_complete = true;
 			}
 			catch (const std::invalid_argument& e) {
 				std::cout << "Try '-t' with a number from 1-9\n\n";
@@ -101,18 +101,23 @@ int main(int argc, char* argv[]) {
 				filenames.push_back(std::string(argv[j]));
 
 			if (filenames.empty()) {
-				std::cout << "Usage: " << argv[0] << " <file1> <file2> ... <fileN>\n";
+				std::cout << "Usage: " << argv[0] << " -t [1-9] -f [file.prs]\n";
 				return 1;
 			}
 			process_files(filenames);
+			animation_complete = true;
 		}
 		// Handle unexpected/unknown flags
 		else {
-		    std::cerr << "Unknown argument: " << args[i] << "\n";
-		    return 1;
+			std::cerr << "Unknown argument: " << args[i] << "\n";
+			std::cout << "Usage: " << argv[0] << " -t [1-9] -f [file.prs]\n";
+			return 1;
 		}
 	}
 
-	std::cout << "You didn't specify any parameters.  Try running\n./oscillo -p presets/Time.prs presets/Anim2.prs\n./oscillo -t [0-9]\n./oscillo -p presets/Time.prs presets/ColorTest.prs\n\n";
+	if (!animation_complete) {
+		std::cout << "You didn't specify any parameters.  Try running\n./oscillo -p presets/Time.prs presets/Anim2.prs\n./oscillo -t [0-9]\n./oscillo -p presets/Time.prs presets/ColorTest.prs\n\n";
+		return 1;
+	}
 	return 0;
 }

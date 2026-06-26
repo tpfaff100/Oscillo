@@ -13,6 +13,7 @@ class Preset
 {
 	std::map<std::string, std::string> appsets;
 
+
 	OscillVector osc_vec;	// own the oscillators for the lifetime of the preset
 	Bank *bank = nullptr;	// collection of oscillators filled out and controlled by Preset.
 
@@ -48,7 +49,12 @@ class Preset
 	float fOsc1PhaseY = 0.0f, fOsc2PhaseY = 0.0f, fOsc3PhaseY = 0.0f, fOsc4PhaseY = 0.0f, fOsc5PhaseY = 0.0f, fOsc6PhaseY = 0.0f;
 
 	// general class vars for Preset object 
-	uint64_t duration = 0;
+
+	// we need the start time and a duration to calculate how long to keep plotting the graph for.
+//	long long llStartTime = 0.0;
+	long long llExpiryTime = 0.0;
+	uint64_t duration = 10000;
+
 	uint64_t presetLoopYield = 0;
 
 public:

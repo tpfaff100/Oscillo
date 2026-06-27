@@ -3,11 +3,11 @@
 	duration="1m",
 	loop_yield_time="40ms",
 	osc1_inc_rate=".01"
-	osc2_inc_rate=".015"
+	osc2_inc_rate=".02"
+	osc3_inc_rate=".02",
+	osc4_incrate=".01",
 	osc1_swap_axes="true"
 	osc2_swap-axes="true"
-	osc3_inc_rate=".03",
-	osc4_incrate=".01",
-#	amplitude_modulation="true"
+	amplitude_modulation="true"
 }
 	

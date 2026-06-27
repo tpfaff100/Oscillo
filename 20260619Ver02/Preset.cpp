@@ -55,12 +55,12 @@
 #define TAG_OSC5_INC_RATE	"osc5_inc_rate"
 #define TAG_OSC6_INC_RATE	"osc6_inc_rate"
 
-#define TAG_OSC1_SETSCALE	"osc1_setscale"
-#define TAG_OSC2_SETSCALE	"osc2_setscale"
-#define TAG_OSC3_SETSCALE	"osc3_setscale"
-#define TAG_OSC4_SETSCALE	"osc4_setscale"
-#define TAG_OSC5_SETSCALE	"osc5_setscale"
-#define TAG_OSC6_SETSCALE	"osc6_setscale"
+#define TAG_OSC1_SETSCALE	"osc1_set_scale"
+#define TAG_OSC2_SETSCALE	"osc2_set_scale"
+#define TAG_OSC3_SETSCALE	"osc3_set_scale"
+#define TAG_OSC4_SETSCALE	"osc4_set_scale"
+#define TAG_OSC5_SETSCALE	"osc5_set_scale"
+#define TAG_OSC6_SETSCALE	"osc6_set_scale"
 
 #define TAG_OSC1_SWAP_AXES	"osc1_swap_axes"
 #define TAG_OSC2_SWAP_AXES	"osc2_swap_axes"

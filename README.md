@@ -12,7 +12,7 @@ Code and functional updates:
   example:
 <br>
 <br>
-              cd ../20260619Ver02
+              cd ./20260619Ver02
 <br>
               make
 <br>

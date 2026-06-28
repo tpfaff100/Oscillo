@@ -1,0 +1,7 @@
+{
+	file="anims/globe.vt"
+	initial_delay="1s",
+	duration="19s",
+	loop_yield_time="40ms",
+}
+	

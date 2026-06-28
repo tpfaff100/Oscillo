@@ -1,5 +1,54 @@
 # Oscillo
-Simulator of an analog computer / synthesizer / laser imaging system using trig waveforms and combinations thereof
+
+20260619Ver02 released and has the following improvements
+Simulator of an analog computer / synthesizer / laser imaging system using trig waveforms and combinations
+
+Code and functional updates:
+- Added Presets to allow loading of files to generate waveforms
+- Added options to control timing for displaying complex waveforms
+- Added preset files to use with presets:
+
+  example:    cd ../20260619Ver02
+              make
+              ./oscillo -p presets/
+              ./oscillo -p presets/StarFlower.prs presets/Anim.prs
+            
+- Compiles on Linux and MacOS, using C++ Version 20 or better
+- Updated to use C++ collection classes
+- Move first test programs into 'regression' suite:
+              ./oscillo -t [1-9]
+
+This allows testing of each improvement and shows backward/historical compatability as the application developed.
+These regression tests are also helpful in understanding how the different layers of software operate (simple to complex)
+
+---------------------------------------------------------------
+This version features:
+
+Each oscillator controls a sine and cosine waveform.
+i.e. each oscillator is a quadrature oscillator.
+
+Each bank contains multiple oscillators.  The intent is to have six but probably more are fine if you need them.
+For laser projection, usually two or three are used for a base shape with two high-speed oscillators used to modulate the image.
+Beyond that it gets difficult to keep track of what's going on.  For this reason I have in my mind- banks of six oscillators.
+
+Note that this is intended for use with x,y coordinate plane, as was the original laser imaging system.
+Can we potentially do more than that?  Yes, of course.
+
+Each PRESET can have a Bank of oscillators.  There is a 1:1 relationship between a 'preset' and a 'bank of oscillators.'
+For now I want them in unrelated classes but yes these could be merged into a class hierarchy.  Will see.
+
+Triangle and Sawtooth waveform generation is not completed yet.
+
+I did some testing with cosine lookup tables on Macos.  It seems to me there is not a lot of advantage moving away from the math libraries.
+I left an implementation in there for future testing on different platforms but it probably doesn't make sense with math+floating point hardware
+so advanced now!  Maybe if you want to run this on a Raspberry PI it might be worth looking at optimizing the sine/cos lookups.
+
+I'm keeping the old Ver01 copy of Oscillo around just because I like looking at it once in awhile.  Maybe will delete it someday.
+
+---------------------------------------------------------------
+Original release 20240310Ver01 - (old version)
+
+Simulator of an analog computer / synthesizer / laser imaging system using trig waveforms and combinations
 
 I have spent a few weekends on this project it currently supports a group of quadrature oscillators, rendering output
 into a virtual framebuffer that (for ease of implementation) consists of text in the unix command line.  I'm in the

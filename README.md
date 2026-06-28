@@ -9,7 +9,9 @@ Code and functional updates:
 - Added options to control timing for displaying complex waveforms
 - Added preset files to use with presets:
 <br>
-  example:    cd ../20260619Ver02
+  example:
+<br>
+              cd ../20260619Ver02
 <br>
               make
 <br>

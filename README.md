@@ -23,7 +23,7 @@ Code and functional updates:
 - Program now exits when time limit has expired
 - Compiles on Linux and MacOS, using C++ Version 20 or better
 - Updated to use C++ collection classes to facilitate new extensions and features
-- Move first test programs into 'regression' suite:
+- Moved the old test programs into 'regression' suite.  These can be run as follows:
 <br>
               ./oscillo -t [1-9]
 <br>

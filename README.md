@@ -11,6 +11,7 @@ Code and functional updates:
 <br>
   example:
 <br>
+<br>
               cd ../20260619Ver02
 <br>
               make
@@ -27,6 +28,7 @@ Code and functional updates:
 - Compiles on Linux and MacOS, using C++ Version 20 or better
 - Updated to use C++ collection classes to facilitate new extensions and features
 - Moved the old test programs into 'regression' suite.  These can be run as follows:
+<br>
 <br>
               ./oscillo -t [1-9]
 <br>

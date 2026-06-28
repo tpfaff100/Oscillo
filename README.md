@@ -1,7 +1,8 @@
 # Oscillo
 
-20260619Ver02 released and has the following improvements
 Simulator of an analog computer / synthesizer / laser imaging system using trig waveforms and combinations
+
+20260619Ver02 has been released and has the following improvements
 
 Code and functional updates:
 - Added Presets to allow loading of files to generate waveforms
@@ -10,11 +11,14 @@ Code and functional updates:
 
   example:    cd ../20260619Ver02
               make
-              ./oscillo -p presets/
+              ./oscillo -p presets/[file1.prs] [file2.prs] [file3.prs]
+              ./oscillo -p presets/Anim4.prs
               ./oscillo -p presets/StarFlower.prs presets/Anim.prs
-            
+
+- Supports multiple presets at one time if you want and the timebases are blended.  First oscillator specs the duration to run
+- Program now exits when time limit has expired
 - Compiles on Linux and MacOS, using C++ Version 20 or better
-- Updated to use C++ collection classes
+- Updated to use C++ collection classes to facilitate new extensions and features
 - Move first test programs into 'regression' suite:
               ./oscillo -t [1-9]
 

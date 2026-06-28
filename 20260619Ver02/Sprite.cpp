@@ -9,6 +9,8 @@
 #include <iostream>     // std::cout
 #include <sstream>      // std::istringstream
 #include <string>       // std::string
+#include <algorithm>
+#include <iterator>
 
 using namespace std;
 

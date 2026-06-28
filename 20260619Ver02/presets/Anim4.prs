@@ -5,9 +5,6 @@
 	osc1_inc_rate=".01"
 	osc2_inc_rate=".02"
 	osc3_inc_rate=".02",
-	osc4_incrate=".01",
 	osc1_swap_axes="true"
-	osc2_swap-axes="true"
 	amplitude_modulation="true"
 }
-	

@@ -14,6 +14,8 @@
 #include "Preset.h"
 #include "Types.h"
 
+#include <string.h>
+
 #define ASPECT_X	4
 #define ASPECT_Y	3	
 #define DELAY		70000

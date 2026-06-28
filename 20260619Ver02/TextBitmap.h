@@ -6,6 +6,7 @@
 
 #pragma once
 #include <array>
+#include <cstdint>              // for uint8_t on linux
 
 #define TEXT_COLOR_LEN		10
 

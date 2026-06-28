@@ -51,11 +51,6 @@
 #include "Regress.h"
 #include "Preset.h"
 
-#define ASPECT_X	4
-#define ASPECT_Y	3	
-#define DELAY		70000
-
-
 
 
 // Given a list of filenames, send the list to a new instance of the Preset object and let it draw them as animations.

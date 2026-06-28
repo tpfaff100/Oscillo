@@ -5,7 +5,6 @@
 
 class Cos : public Trig
 {
-
 public:
 	float eval(float);
 	float next(void);

@@ -8,11 +8,15 @@ Code and functional updates:
 - Added Presets to allow loading of files to generate waveforms
 - Added options to control timing for displaying complex waveforms
 - Added preset files to use with presets:
-
+<br>
   example:    cd ../20260619Ver02
+<br>
               make
+<br>
               ./oscillo -p presets/[file1.prs] [file2.prs] [file3.prs]
+<br>
               ./oscillo -p presets/Anim4.prs
+<br>
               ./oscillo -p presets/StarFlower.prs presets/Anim.prs
 
 - Supports multiple presets at one time if you want and the timebases are blended.  First oscillator specs the duration to run
@@ -20,7 +24,10 @@ Code and functional updates:
 - Compiles on Linux and MacOS, using C++ Version 20 or better
 - Updated to use C++ collection classes to facilitate new extensions and features
 - Move first test programs into 'regression' suite:
+<br>
               ./oscillo -t [1-9]
+<br>
+<br>
 
 This allows testing of each improvement and shows backward/historical compatability as the application developed.
 These regression tests are also helpful in understanding how the different layers of software operate (simple to complex)

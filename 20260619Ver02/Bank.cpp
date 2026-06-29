@@ -99,8 +99,6 @@ bool Bank::range(Bank *b2) {
 				if (!disable_amplitude) { 	// tickle the amplitude waveform oscillator once every animation frame.
 					o.setScale(SCALE*amplitude_waveform.next());	
 				}
-//check
-//printf("%f\n", SCALE*amplitude_waveform.next());
 				o.reset();
 			}
 		}

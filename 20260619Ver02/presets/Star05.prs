@@ -1,0 +1,12 @@
+{
+	initial_delay="1s",
+	duration="60s",
+	loop_yield_time="60ms",
+	osc1_inc_rate=".001"
+	osc2_inc_rate=".0015"
+	osc1_swap_axes="true",
+	osc1_set_scale="70",
+	osc2_set_scale="40",
+#	amplitude_modulation="true"
+}
+	

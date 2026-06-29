@@ -195,6 +195,9 @@ Preset::Preset(std::string filename) {
 						string key = line.substr( 0, first-1);
 						string attr = line.substr (first+1,last-first-1);
 						appsets[key] = attr;
+#if NDEBUG
+cout << " key= " + key + ", attr= " + attr + "\n";
+#endif
 					}
 				}
 			}
@@ -331,13 +334,12 @@ Preset::Preset(std::string filename) {
         duration =             unitsToms( appsets[TAG_DURATION], TAG_DURATION );
         presetLoopYield =      unitsToms( appsets[TAG_LOOP_YIELD_DELAY], TAG_LOOP_YIELD_DELAY );
 //cout << "\n" << presetLoopYield << endl;
-//exit(0);
 
         Sprite *sprite = new Sprite(appsets[TAG_FILE], 23);     // optionally load a sprite.
         bank->setSprite(sprite);       // attach the animation to the oscillator bank.
 
         llExpiryTime = timeSinceEpochMillisec() + duration;
-	std::cout << "\n\n" << delay << std::endl;
+//	std::cout << "\n\n" << delay << std::endl;
 	std::cout << duration << std::endl;
 	std::cout << llExpiryTime << std::endl;
 	std::cout << timeSinceEpochMillisec() << std::endl;
@@ -404,7 +406,6 @@ float Preset::jsonStrToFloat(std::string tagStr) {
 int Preset::jsonStrToInt(std::string tagStr) {
 	string str = appsets[tagStr];
 	int scale=SCALE;				// default set in Oscill.h
-
 	if (str.length() > 0) {				// if the tag exists.
 		scale = std::stof(appsets[tagStr]);	// get the attribute/element.
 	}

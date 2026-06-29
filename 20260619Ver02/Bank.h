@@ -36,11 +36,13 @@ public:
 	virtual void dump(void);
 
 	/** range() returns true until trigonometry range cycle is completed then returns false */
-        virtual bool range(Bank *bank2);
-	virtual void renderSpriteOffscreen(Sprite *sprite);
-	virtual void setAmplitudeModulation(bool enable);
-	virtual void setColorModulation(bool enable, Color color1, Color color2, float incrementRate); 
-	virtual void setSprite(Sprite *sprite); 
+        bool range(Bank *bank2);
+	void renderSpriteOffscreen(Sprite *sprite);
+	void setAmplitudeModulation(bool enable);
+	void setAmplitudeModIncRate(float rate);
+	void setColorModulation(bool enable, Color color1, Color color2, float incrementRate); 
+	void setSprite(Sprite *sprite); 
+
 };
 
 #endif

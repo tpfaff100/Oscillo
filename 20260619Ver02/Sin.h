@@ -5,7 +5,6 @@
 
 class Sin : public Trig
 {
-
 public:
 	float eval(float);
 	float next(void);

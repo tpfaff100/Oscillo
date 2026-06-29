@@ -12,10 +12,21 @@ float tri(float x) { 			// std::asin(std::sin(x)) creates a triangular zigzag
     return (2.0 / std::numbers::pi) * std::asin(std::sin(x));
 }
 
+/*
+float sawtooth(float x) {
+    // Avoid division by zero when sin(x/2) is exactly 0
+    double sin_half = std::sin(x / 2.0);
+    if (std::abs(sin_half) < 1e-15) {
+        return -1.0; // Reset point of the sawtooth
+    }
+    
+    double cot = std::cos(x / 2.0) / sin_half;
+    return -2.0 * std::atan(cot) / M_PI;
+}
+*/
 
 
 float Triangle::triangle(float radians) {
-//        return f_tri(radians*2)/4.0f;
 	return triangle(radians*2)/4.0f;
 }
 
@@ -30,6 +41,6 @@ float Triangle::eval(float radians) {
 
 float Triangle::next() {
 	current += incrate;
-//	return sin(current+radians+phase);
 	return tri(current+radians+phase);
+//	return sawtooth(current+radians+phase);
 }

@@ -6,5 +6,5 @@
 	osc2_inc_rate=".02"
 	osc3_inc_rate=".02",
 	osc1_swap_axes="true"
-	amplitude_modulation="true"
+        amp_mod="true"
 }

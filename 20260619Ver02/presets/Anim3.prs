@@ -8,6 +8,6 @@
 	osc2_swap-axes="true"
 	osc3_inc_rate=".03",
 	osc4_incrate=".01",
-#	amplitude_modulation="true"
+#	amp_mod="true"
 }
 	

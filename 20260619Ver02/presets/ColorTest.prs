@@ -8,7 +8,7 @@
 	osc4_inc_rate=".0202",
 	osc1_setscale="50",
 	osc1_swap_axes="true",
-	amplitude_modulation="true"
+	amp_mod="true"
 	color_mod_enable="true",
 	color_mod1="green",
 	color_mod2="cyan",

@@ -146,6 +146,7 @@ void Bank::setSprite(Sprite *sprite) {
 	this->sprite = sprite;
 }
 
+
 void Bank::setColorModulation(bool enable, Color color1, Color color2, float incrementRate) {
 	surface->setColor(enable, color1, color2);
 	color_mod_waveform->setIncRate(incrementRate);
@@ -155,5 +156,10 @@ void Bank::setColorModulation(bool enable, Color color1, Color color2, float inc
 void Bank::setAmplitudeModulation(bool enable)
 {
 	disable_amplitude = !enable;
+}
+
+
+void Bank::setAmplitudeModIncRate(float incRate) {
+        amplitude_waveform.setIncRate(incRate);
 }
 

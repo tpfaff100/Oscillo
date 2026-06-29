@@ -69,7 +69,9 @@
 #define TAG_OSC5_SWAP_AXES	"osc5_swap_axes"
 #define TAG_OSC6_SWAP_AXES	"osc6_swap_axes"
 
-#define TAG_AMPLITUDE_MOD	"amplitude_modulation"
+#define TAG_AMPLITUDE_MOD		"amp_mod"
+#define TAG_AMPLITUDE_MOD_INC_RATE	"amp_mod_inc_rate"
+#define TAG_AMPLITUDE_MOD_WAVE_TYPE	"amp_mod_wave_type"		// not yet implemented
 
 #define TAG_COLOR_MOD_ENABLE	"color_mod_enable"
 #define TAG_COLOR_1		"color_mod1"
@@ -252,6 +254,7 @@ cout << " key= " + key + ", attr= " + attr + "\n";
 
 	bAmpMod = jsonStrToBool( TAG_AMPLITUDE_MOD );
 
+	fAmpModIncRate = jsonStrToFloat( TAG_AMPLITUDE_MOD_INC_RATE );
 	fColorModIncRate = jsonStrToFloat( TAG_COLOR_MOD_INC_RATE );
 	colorMod1 = getColorMod( TAG_COLOR_1);
 	colorMod2 = getColorMod( TAG_COLOR_2);
@@ -311,9 +314,14 @@ cout << " key= " + key + ", attr= " + attr + "\n";
 
         bank = new Bank(osc_vec);
 	bank->setAmplitudeModulation(bAmpMod);
+	if (bAmpMod == true) {
+		if (fAmpModIncRate > .001)
+			bank->setAmplitudeModIncRate(fAmpModIncRate);
+	}
 
 	if (bColorEnable == true)
 		bank->setColorModulation(bColorEnable, colorMod1, colorMod2, fColorModIncRate);      /* optional, color modulation is off by default */
+
 
 #ifndef NDEBUG
         std::cerr << "Preset debug: rates="

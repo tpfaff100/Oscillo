@@ -7,6 +7,6 @@
 	osc1_swap_axes="true",
 	osc1_set_scale="90",
 	osc2_set_scale="15",
-#	amplitude_modulation="true"
+#       amp_mod="true"
 }
 	

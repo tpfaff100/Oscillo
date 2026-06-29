@@ -36,6 +36,7 @@ class Preset
 
 	// enable amplitude modulation on the oscillator bank. 
 	bool bAmpMod;	
+	float fAmpModIncRate;
 
 	// color modulation information- this lets colors animate sync'd to the trig waveform while shape is animating. 
         int bColorEnable;
